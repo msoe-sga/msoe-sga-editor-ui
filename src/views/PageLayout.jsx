@@ -1,7 +1,7 @@
 import React from 'react';
 import { Header } from '../components/layout/Layout';
 import * as styles from './PageLayout.scss';
-const logo = require('../assets/logo.png');
+import logo from '../assets/logo.png';
 
 export default function PageLayout() {
     return (
