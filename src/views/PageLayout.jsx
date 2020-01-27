@@ -1,6 +1,6 @@
 import React from 'react';
 import { Header } from '../components/layout/Layout';
-import * as styles from './PageLayout.scss';
+import styles from './PageLayout.module.scss';
 import logo from '../assets/logo.png';
 
 export default function PageLayout() {

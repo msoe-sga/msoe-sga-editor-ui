@@ -1,5 +1,5 @@
 import React from 'react';
-import * as styles from './Layout.scss';
+import styles from './Layout.module.scss';
 
 export function Header({ children }) {
     return (
