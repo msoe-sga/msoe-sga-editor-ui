@@ -1,9 +1,10 @@
 import React from 'react';
+import * as styles from './Layout.scss';
 
 export function Header({ children }) {
     return (
-        <div>
+        <section className={styles.header}>
             {children}
-        </div>
+        </section>
     );
 }
