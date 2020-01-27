@@ -1,12 +1,12 @@
 import React from 'react';
 import { Header } from '../components/layout/Layout';
-import { Logo } from '../assets/logo.png';
+const logo = require('../assets/logo.png');
 
 export default function PageLayout() {
     return (
         <>
             <Header>
-                <img src={Logo}></img>
+                <img alt="Logo" src={logo}></img>
                 <h1>MSOE Student Government Website Editor</h1>
             </Header>
         </>
