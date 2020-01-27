@@ -1,6 +1,7 @@
 import React from 'react';
 import { Header } from '../components/layout/Layout';
 import Sidebar from '../components/sidebar/Sidebar';
+import SidebarItem from '../components/sidebar/SidebarItem';
 import styles from './PageLayout.module.scss';
 import logo from '../assets/logo.png';
 
@@ -12,7 +13,7 @@ export default function PageLayout() {
                 <h1>MSOE Student Government Website Editor</h1>
             </Header>
             <Sidebar>
-                <div>Editors</div>
+                <SidebarItem text="Editors"></SidebarItem>
             </Sidebar>
         </>
     );
