@@ -14,6 +14,7 @@ export default function PageLayout() {
             </Header>
             <Sidebar>
                 <SidebarItem text="Editors"></SidebarItem>
+                <SidebarItem text="Temp"></SidebarItem>
             </Sidebar>
         </>
     );
