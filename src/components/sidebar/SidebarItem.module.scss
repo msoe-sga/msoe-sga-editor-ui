@@ -1,4 +1,11 @@
-.sidebarItem {
+.sidebarItemContainer {
     color: white;
-    margin-top: 1rem;
+    border-bottom: 1px solid black;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    cursor: pointer;
 }

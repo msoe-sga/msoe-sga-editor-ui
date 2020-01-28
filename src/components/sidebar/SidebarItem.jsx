@@ -3,8 +3,10 @@ import styles from './SidebarItem.module.scss';
 
 export default function SidebarItem(props) {
     return (
-        <section className={styles.sidebarItem}>
-            {props.text}
+        <section className={styles.sidebarItemContainer}>
+            <section>
+                {props.text}
+            </section>
         </section>
     );
 }
