@@ -1,6 +1,6 @@
 import React from 'react';
 import { Switch, Route, Link, useRouteMatch } from 'react-router-dom';
-import Editors from '../editors';
+import Editors from '../editors/Editors';
 
 const paths = {
     editors: {

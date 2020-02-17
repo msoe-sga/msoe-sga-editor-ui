@@ -1,13 +1,8 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import PageLayout from './views/PageLayout'
 import './components/core/core.scss';
+import App from './App';
 
-function App() {
-  return (
-    <PageLayout />
-  )
-}
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
