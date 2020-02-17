@@ -1,7 +1,5 @@
 import React from 'react';
 import { Header } from '../components/layout/Layout';
-import Sidebar from '../components/sidebar/Sidebar';
-import SidebarItem from '../components/sidebar/SidebarItem';
 import SidebarRouter from '../components/SidebarRouter/SidebarRouter';
 import styles from './PageLayout.module.scss';
 import logo from '../assets/logo.png';
