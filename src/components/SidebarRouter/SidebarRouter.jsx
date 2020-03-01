@@ -1,6 +1,7 @@
 import React from 'react';
 import { Switch, Route, Link, useRouteMatch } from 'react-router-dom';
 import Editors from '../editors/Editors';
+import { getAllEditors } from '../../api/editors';
 
 const paths = {
     editors: {
@@ -8,7 +9,9 @@ const paths = {
         displayText: 'Editors',
         onClick: (setLocalState) => {
             setLocalState(null); // Do this to clear view when switching
-            // TODO: Call the API to get the list of editors
+            getAllEditors(json => {
+                setLocalState(json);
+            })
         }
     }
 };
