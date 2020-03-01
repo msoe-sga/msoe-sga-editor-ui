@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Route, Link, useRouteMatch } from 'react-router-dom';
+import { Switch, Route, Link } from 'react-router-dom';
 import Editors from '../editors/Editors';
 import { getAllEditors } from '../../api/editors';
 
@@ -17,14 +17,13 @@ const paths = {
 };
 
 export default function SidebarRouter() {
-    const { url, path } = useRouteMatch();
     const [switchContent, setSwitchContent] = React.useState(null);
 
     return (
         <div>
             <div>
                 {Object.keys(paths).map(path => {
-                    const toPath = `${url}/${paths[path].path}`;
+                    const toPath = `/${paths[path].path}`;
                     return (
                         <Link
                             to={toPath}
@@ -39,7 +38,7 @@ export default function SidebarRouter() {
                 })}
             </div>
             <Switch>
-                <Route exact={true} path={`${path}/${paths.editors.path}`}>
+                <Route exact={true} path={`/${paths.editors.path}`}>
                     <Editors editors={switchContent} />
                 </Route>
             </Switch>
