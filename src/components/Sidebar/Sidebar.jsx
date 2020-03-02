@@ -1,11 +1,10 @@
 import React from 'react';
-import { Switch, Route, Link } from 'react-router-dom';
-import Editors from '../editors/Editors';
+import { Link } from 'react-router-dom';
 import { getAllEditors } from '../../api/editors';
 
 const paths = {
     editors: {
-        path: 'editors',
+        path: '/',
         displayText: 'Editors',
         onClick: (setLocalState) => {
             setLocalState(null); // Do this to clear view when switching
@@ -16,14 +15,14 @@ const paths = {
     }
 };
 
-export default function SidebarRouter() {
+export default function Sidebar() {
     const [switchContent, setSwitchContent] = React.useState(null);
 
     return (
         <div>
             <div>
                 {Object.keys(paths).map(path => {
-                    const toPath = `/${paths[path].path}`;
+                    const toPath = `${paths[path].path}`;
                     return (
                         <Link
                             to={toPath}
