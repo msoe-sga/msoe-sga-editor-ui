@@ -37,11 +37,6 @@ export default function SidebarRouter() {
                     );
                 })}
             </div>
-            <Switch>
-                <Route exact={true} path={`/${paths.editors.path}`}>
-                    <Editors editors={switchContent} />
-                </Route>
-            </Switch>
         </div>
     );
 }

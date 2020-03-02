@@ -4,7 +4,7 @@ import SidebarRouter from '../components/SidebarRouter/SidebarRouter';
 import styles from './PageLayout.module.scss';
 import logo from '../assets/logo.png';
 
-export default function PageLayout() {
+export default function PageLayout({ children }) {
     return (
         <>
             <Header>
@@ -12,6 +12,7 @@ export default function PageLayout() {
                 <h1>MSOE Student Government Website Editor</h1>
             </Header>
             <SidebarRouter />
+            {children}
         </>
     );
 }
