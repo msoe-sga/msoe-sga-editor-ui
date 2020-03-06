@@ -11,8 +11,10 @@ export default function PageLayout({ children }) {
                 <img alt="Logo" src={logo} className={styles.logo}></img>
                 <h1>MSOE Student Government Website Editor</h1>
             </Header>
-            <Sidebar />
-            {children}
+            <section className={styles.pageLayoutContainer}>
+                <Sidebar />
+                {children}
+            </section>
         </>
     );
 }
