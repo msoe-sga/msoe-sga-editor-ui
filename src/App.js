@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import PageLayout from "./views/PageLayout";
-import Editors from './components/editors/Editors';
+import EditorsTable from './components/editors/EditorsTable';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import allReducers from './api/state/reducers';
@@ -19,7 +19,7 @@ export default function App() {
                 <Switch>
                     <Route exact={true} path={paths.root}>
                         <PageLayout>
-                            <Editors />
+                            <EditorsTable />
                         </PageLayout>
                     </Route>
                 </Switch>

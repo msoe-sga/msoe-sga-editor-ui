@@ -2,14 +2,7 @@ import React from 'react';
 import { getAllEditors } from '../../api/editors';
 import { useSelector, useDispatch } from 'react-redux';
 import { setEditors } from '../../api/state/actions';
-import {
-    useTable,
-    useGroupBy,
-    useFilters,
-    useSortBy,
-    useExpanded,
-    usePagination
-} from 'react-table';
+import {useTable } from 'react-table';
 
 export default function Editors() {
     const tableColumns = [
