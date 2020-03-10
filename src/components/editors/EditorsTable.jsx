@@ -53,6 +53,8 @@ export default function EditorsTable() {
     }
 
     function openCreateEditorModal() {
+      setCreateEditorModalName(null);
+      setCreateEditorModalEmail(null);
       setIsCreateEditorModalOpen(true);
     }
 
@@ -65,10 +67,15 @@ export default function EditorsTable() {
       setIsLoading(true);
       createEditor(createEditorModalName, createEditorModalEmail, json => {
         setIsLoading(false);
-        setCreateEditorModalName(null);
-        setCreateEditorModalEmail(null);
-        dispatch(editors.push(json));
       });
+    }
+
+    function onCreateEditorModalNameChange(event) {
+      setCreateEditorModalName(event.target.value);
+    }
+
+    function onCreateEditorModalEmailChange(event) {
+      setCreateEditorModalEmail(event.target.value);
     }
 
     const {
@@ -119,11 +126,11 @@ export default function EditorsTable() {
                   <form onSubmit={onCreateEditorFormSubmit}>
                     <label>
                       Name:
-                      <input type="text" value={createEditorModalName} onChange={setCreateEditorModalName} />
+                      <input type="text" value={createEditorModalName} onChange={onCreateEditorModalNameChange} />
                     </label>
                     <label>
                       Email:
-                      <input type="text" value={createEditorModalEmail} onChange={setCreateEditorModalEmail} />
+                      <input type="text" value={createEditorModalEmail} onChange={onCreateEditorModalEmailChange} />
                     </label>
                     <button type="submit">Save</button>
                   </form>
