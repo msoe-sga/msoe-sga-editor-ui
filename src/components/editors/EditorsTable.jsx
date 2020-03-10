@@ -1,5 +1,5 @@
 import React from 'react';
-import { getAllEditors } from '../../api/editors';
+import { getAllEditors, createEditor } from '../../api/editors';
 import { useSelector, useDispatch } from 'react-redux';
 import { setEditors } from '../../api/state/actions';
 import {useTable } from 'react-table';
@@ -29,6 +29,9 @@ export default function EditorsTable() {
     const editors = useSelector(state => state.editors);
     const [isLoading, setIsLoading] = React.useState(true);
     const [isCreateEditorModalOpen, setIsCreateEditorModalOpen] = React.useState(false);
+    const [createEditorModalName, setCreateEditorModalName] = React.useState(null);
+    const [createEditorModalEmail, setCreateEditorModalEmail] = React.useState(null);
+
     const dispatch = useDispatch();
     let tableEditors = [];
 
@@ -58,7 +61,14 @@ export default function EditorsTable() {
     }
 
     function onCreateEditorFormSubmit() {
-      
+      closeCreateEditorModal();
+      setIsLoading(true);
+      createEditor(createEditorModalName, createEditorModalEmail, json => {
+        setIsLoading(false);
+        setCreateEditorModalName(null);
+        setCreateEditorModalEmail(null);
+        dispatch(editors.push(json));
+      });
     }
 
     const {
@@ -106,6 +116,17 @@ export default function EditorsTable() {
                   onRequestClose={closeCreateEditorModal}
                 >
                   <h2>Create Editor</h2>
+                  <form onSubmit={onCreateEditorFormSubmit}>
+                    <label>
+                      Name:
+                      <input type="text" value={createEditorModalName} onChange={setCreateEditorModalName} />
+                    </label>
+                    <label>
+                      Email:
+                      <input type="text" value={createEditorModalEmail} onChange={setCreateEditorModalEmail} />
+                    </label>
+                    <button type="submit">Save</button>
+                  </form>
                 </Modal>
               </div>}
         </div>
