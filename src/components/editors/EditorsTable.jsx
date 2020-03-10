@@ -3,8 +3,9 @@ import { getAllEditors } from '../../api/editors';
 import { useSelector, useDispatch } from 'react-redux';
 import { setEditors } from '../../api/state/actions';
 import {useTable } from 'react-table';
+import Modal from 'react-modal';
 
-export default function Editors() {
+export default function EditorsTable() {
     const tableColumns = [
         {
             Header: 'Editors',
@@ -27,6 +28,7 @@ export default function Editors() {
 
     const editors = useSelector(state => state.editors);
     const [isLoading, setIsLoading] = React.useState(true);
+    const [isCreateEditorModalOpen, setIsCreateEditorModalOpen] = React.useState(false);
     const dispatch = useDispatch();
     let tableEditors = [];
 
@@ -47,6 +49,18 @@ export default function Editors() {
         });
     }
 
+    function openCreateEditorModal() {
+      setIsCreateEditorModalOpen(true);
+    }
+
+    function closeCreateEditorModal() {
+      setIsCreateEditorModalOpen(false);
+    }
+
+    function onCreateEditorFormSubmit() {
+      
+    }
+
     const {
         getTableProps,
         getTableBodyProps,
@@ -62,29 +76,38 @@ export default function Editors() {
         <div>
             {isLoading && <div>Loading...</div>}
             {!isLoading && 
-            <table {...getTableProps()}>
-            <thead>
-              {headerGroups.map(headerGroup => (
-                <tr {...headerGroup.getHeaderGroupProps()}>
-                  {headerGroup.headers.map(column => (
-                    <th {...column.getHeaderProps()}>{column.render('Header')}</th>
-                  ))}
-                </tr>
-              ))}
-            </thead>
-            <tbody {...getTableBodyProps()}>
-              {rows.map((row, i) => {
-                prepareRow(row)
-                return (
-                  <tr {...row.getRowProps()}>
-                    {row.cells.map(cell => {
-                      return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+              <div>
+                <table {...getTableProps()}>
+                  <thead>
+                    {headerGroups.map(headerGroup => (
+                      <tr {...headerGroup.getHeaderGroupProps()}>
+                        {headerGroup.headers.map(column => (
+                          <th {...column.getHeaderProps()}>{column.render('Header')}</th>
+                        ))}
+                      </tr>
+                    ))}
+                  </thead>
+                  <tbody {...getTableBodyProps()}>
+                    {rows.map((row, i) => {
+                      prepareRow(row)
+                      return (
+                        <tr {...row.getRowProps()}>
+                          {row.cells.map(cell => {
+                            return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                          })}
+                        </tr>
+                      )
                     })}
-                  </tr>
-                )
-              })}
-            </tbody>
-          </table>}
+                  </tbody>
+                </table>
+                <button onClick={openCreateEditorModal}>Create Editor</button>
+                <Modal
+                  isOpen={isCreateEditorModalOpen}
+                  onRequestClose={closeCreateEditorModal}
+                >
+                  <h2>Create Editor</h2>
+                </Modal>
+              </div>}
         </div>
     );
 }
