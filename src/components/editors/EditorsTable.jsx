@@ -6,6 +6,9 @@ import { useTable, usePagination } from 'react-table';
 import Modal from 'react-modal';
 import styles from './EditorsTable.module.scss';
 
+// TODO: There are some pagination bugs that need fixing when an editor gets created it should navigate to the last page
+// and when an editor gets created it should move to the last page it was on. Currently in both of those cases they navigate to the
+// first page
 export default function EditorsTable() {
     const tableColumns = React.useMemo(() => [
         {
@@ -41,6 +44,8 @@ export default function EditorsTable() {
     const [isLoading, setIsLoading] = React.useState(true);
     const [errorMessage, setErrorMessage] = React.useState(null);
     const [initialPageIndex, setInitialPageIndex] = React.useState(0);
+    const [loadingAfterCreate, setLoadingAfterCreate] = React.useState(false);
+    const [performingModalOperation, setPerformingModalOperation] = React.useState(false);
 
     const [isCreateEditorModalOpen, setIsCreateEditorModalOpen] = React.useState(false);
     const [createEditorModalName, setCreateEditorModalName] = React.useState('');
@@ -98,6 +103,17 @@ export default function EditorsTable() {
       initialState: { pageIndex: initialPageIndex, pageSize: 10 }
     }, usePagination);
 
+    if (!performingModalOperation) {
+      if (!isLoading && pageCount - 1 < initialPageIndex) {
+        setInitialPageIndex(pageCount - 1);
+      }
+  
+      if (!isLoading && loadingAfterCreate) {
+        setInitialPageIndex(pageCount - 1);
+        setLoadingAfterCreate(false);
+      }
+    }
+
     function editEditorRowOnClick(row) {
       setEditEditorModalId(row.original.id);
       setEditEditorModalName(row.original.name);
@@ -118,44 +134,45 @@ export default function EditorsTable() {
     }
 
     function onCreateEditorFormSubmit() {
-      setIsLoading(true);
+      setPerformingModalOperation(true);
       createEditor(createEditorModalName, createEditorModalEmail, json => {
         if (json.error) {
           setCreateEditorModalErrorMessage(json.error);
         } else {
+          setLoadingAfterCreate(true);
+          setPerformingModalOperation(false);
+          setIsLoading(true);
           setIsCreateEditorModalOpen(false);
         }
-        setIsLoading(false);
       });
     }
 
     function onEditEditorFormSubmit() {
-      setIsLoading(true);
+      setPerformingModalOperation(true);
       updateEditor(editEditorModalId, editEditorModalName, editEditorModalEmail, json => {
         if (json.error) {
           setEditEditorModalErrorMessage(json.error);
         } else {
+          setPerformingModalOperation(false);
+          setIsLoading(true);
+          setInitialPageIndex(pageIndex);
           setIsEditEditorModalOpen(false);
         }
-        const initialPageIndex = pageIndex;
-        setIsLoading(false);
-        setInitialPageIndex(initialPageIndex);
       });
     }
 
     function deleteEditorOnClick() {
-      setIsLoading(true);
-      setIsDeleteEditorConfirmationModalOpen(false);
+      setPerformingModalOperation(true);
       deleteEditor(deleteEditorConfirmationModalId, json => {
         if (json.error) {
           setErrorMessage(json.error);
-        } 
-        let pageIndexToSet = pageIndex;
-        setIsLoading(false);
-        if (pageCount - 1 < pageIndexToSet) {
-          pageIndexToSet = pageCount - 1;
+        } else {
+          setPerformingModalOperation(false);
+          setIsLoading(true);
         }
-        setInitialPageIndex(pageIndexToSet);
+        setIsDeleteEditorConfirmationModalOpen(false);
+        const initialPageIndex = pageIndex;
+        setInitialPageIndex(initialPageIndex);
       });
     }
 
