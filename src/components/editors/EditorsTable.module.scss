@@ -2,6 +2,7 @@ table {
     margin-left: 3rem;
     border-spacing: 0;
     border: 1px solid black;
+    width: 30rem;
     tr {
       :last-child {
         td {
@@ -27,5 +28,6 @@ table {
 }
 
 .pagination {
+    margin-left: 3rem;
     padding: 0.5rem;
 }

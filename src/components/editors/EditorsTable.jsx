@@ -109,7 +109,7 @@ export default function EditorsTable() {
                     ))}
                   </thead>
                   <tbody {...getTableBodyProps()}>
-                    {rows.map((row, i) => {
+                    {page.map((row, i) => {
                       prepareRow(row)
                       return (
                         <tr {...row.getRowProps()}>
