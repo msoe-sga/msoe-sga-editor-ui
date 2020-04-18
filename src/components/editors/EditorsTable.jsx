@@ -2,18 +2,15 @@ import React from 'react';
 import { getAllEditors, createEditor } from '../../api/editors';
 import { useSelector, useDispatch } from 'react-redux';
 import { setEditors } from '../../api/state/actions';
-import {useTable } from 'react-table';
+import { useTable, usePagination } from 'react-table';
 import Modal from 'react-modal';
+import styles from './EditorsTable.module.scss';
 
 export default function EditorsTable() {
-    const tableColumns = [
+    const tableColumns = React.useMemo(() => [
         {
             Header: 'Editors',
             columns: [
-                {
-                    Header: "Id",
-                    accessor: "id"
-                },
                 {
                     Header: "Name",
                     accessor: "name"
@@ -24,7 +21,7 @@ export default function EditorsTable() {
                 }
             ]
         }
-    ];
+    ], []);
 
     const editors = useSelector(state => state.editors);
     const [isLoading, setIsLoading] = React.useState(true);
@@ -33,24 +30,21 @@ export default function EditorsTable() {
     const [createEditorModalEmail, setCreateEditorModalEmail] = React.useState(null);
 
     const dispatch = useDispatch();
-    let tableEditors = [];
 
-    getAllEditors(json => {
-        if (isLoading) {
-            setIsLoading(false);
-            dispatch(setEditors(json));
-        }
-    });
-
-    if (editors !== null) {
-        tableEditors = editors.map(editor => {
-            return {
-                id: editor.id,
-                name: editor.fields.Name,
-                email: editor.fields.Email
-            }
-        });
+    if (isLoading) {
+      getAllEditors(json => {
+        setIsLoading(false);
+        dispatch(setEditors(json));
+      });
     }
+
+    const tableEditors = React.useMemo(() => editors.map(editor => {
+      return {
+        id: editor.id,
+        name: editor.fields.Name,
+        email: editor.fields.Email
+      }
+    }), [editors]);
 
     function openCreateEditorModal() {
       setCreateEditorModalName(null);
@@ -84,10 +78,20 @@ export default function EditorsTable() {
         headerGroups,
         rows,
         prepareRow,
+        page,
+        canPreviousPage,
+        canNextPage,
+        pageOptions,
+        pageCount,
+        gotoPage,
+        nextPage,
+        previousPage,
+        state: { pageIndex, pageSize }
       } = useTable({
         columns: tableColumns,
         data: tableEditors,
-    });
+        initialState: { pageIndex: 0, pageSize: 10 }
+    }, usePagination);
 
     return (
         <div>
@@ -117,7 +121,27 @@ export default function EditorsTable() {
                     })}
                   </tbody>
                 </table>
-                <button onClick={openCreateEditorModal}>Create Editor</button>
+                <div className={styles.pagination}>
+                  <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
+                    {'<<'}
+                  </button>{' '}
+                  <button onClick={() => previousPage()} disabled={!canPreviousPage}>
+                    {'<'}
+                  </button>{' '}
+                  <button onClick={() => nextPage()} disabled={!canNextPage}>
+                    {'>'}
+                  </button>{' '}
+                  <button onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
+                    {'>>'}
+                  </button>{' '}
+                  <span>
+                    Page{' '}
+                      <strong>
+                        {pageIndex + 1} of {pageOptions.length}
+                      </strong>{' '}
+                    </span>
+                </div>
+                <button onClick={openCreateEditorModal} className={styles.createEditorButton}>Create Editor</button>
                 <Modal
                   isOpen={isCreateEditorModalOpen}
                   onRequestClose={closeCreateEditorModal}
