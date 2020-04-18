@@ -39,26 +39,34 @@ export default function EditorsTable() {
 
     const editors = useSelector(state => state.editors);
     const [isLoading, setIsLoading] = React.useState(true);
+    const [errorMessage, setErrorMessage] = React.useState(null);
+    const [initialPageIndex, setInitialPageIndex] = React.useState(0);
 
     const [isCreateEditorModalOpen, setIsCreateEditorModalOpen] = React.useState(false);
-    const [createEditorModalName, setCreateEditorModalName] = React.useState(null);
-    const [createEditorModalEmail, setCreateEditorModalEmail] = React.useState(null);
+    const [createEditorModalName, setCreateEditorModalName] = React.useState('');
+    const [createEditorModalEmail, setCreateEditorModalEmail] = React.useState('');
+    const [createEditorModalErrorMessage, setCreateEditorModalErrorMessage] = React.useState(null);
 
     const [isEditEditorModalOpen, setIsEditEditorModalOpen] = React.useState(false);
     const [editEditorModalId, setEditEditorModalId] = React.useState(null);
-    const [editEditorModalName, setEditEditorModalName] = React.useState(null);
-    const [editEditorModalEmail, setEditEditorModalEmail] = React.useState(null);
+    const [editEditorModalName, setEditEditorModalName] = React.useState('');
+    const [editEditorModalEmail, setEditEditorModalEmail] = React.useState('');
+    const [editEditorModalErrorMessage, setEditEditorModalErrorMessage] = React.useState(null);
 
     const [isDeleteEditorConfirmationModalOpen, setIsDeleteEditorConfirmationModalOpen] = React.useState(false);
     const [deleteEditorConfirmationModalId, setDeleteEditorConfirmationModalId] = React.useState(null);
-    const [deleteEditorConfirmationModalName, setDeleteEditorConfirmationModalName] = React.useState(null);
+    const [deleteEditorConfirmationModalName, setDeleteEditorConfirmationModalName] = React.useState('');
 
     const dispatch = useDispatch();
 
     if (isLoading) {
       getAllEditors(json => {
+        if (json.error) {
+          setErrorMessage(json.error);
+        } else {
+          dispatch(setEditors(json));
+        }
         setIsLoading(false);
-        dispatch(setEditors(json));
       });
     }
 
@@ -69,6 +77,27 @@ export default function EditorsTable() {
         email: editor.fields.Email
       }
     }), [editors]);
+
+    const {
+      getTableProps,
+      getTableBodyProps,
+      headerGroups,
+      rows,
+      prepareRow,
+      page,
+      canPreviousPage,
+      canNextPage,
+      pageOptions,
+      pageCount,
+      gotoPage,
+      nextPage,
+      previousPage,
+      state: { pageIndex, pageSize }
+    } = useTable({
+      columns: tableColumns,
+      data: tableEditors,
+      initialState: { pageIndex: initialPageIndex, pageSize: 10 }
+    }, usePagination);
 
     function editEditorRowOnClick(row) {
       setEditEditorModalId(row.original.id);
@@ -90,53 +119,54 @@ export default function EditorsTable() {
     }
 
     function onCreateEditorFormSubmit() {
-      setIsCreateEditorModalOpen(false);
       setIsLoading(true);
       createEditor(createEditorModalName, createEditorModalEmail, json => {
+        if (json.error) {
+          setCreateEditorModalErrorMessage(json.error);
+        } else {
+          setIsCreateEditorModalOpen(false);
+        }
         setIsLoading(false);
       });
     }
 
     function onEditEditorFormSubmit() {
       setIsLoading(true);
-      updateEditor(editEditorModalId, editEditorModalName, editEditorModalEmail, () => {
+      updateEditor(editEditorModalId, editEditorModalName, editEditorModalEmail, json => {
+        if (json.error) {
+          setEditEditorModalErrorMessage(json.error);
+        } else {
+          setIsEditEditorModalOpen(false);
+        }
+        const initialPageIndex = pageIndex;
         setIsLoading(false);
+        setInitialPageIndex(initialPageIndex);
       });
     }
 
     function deleteEditor() {
+      setIsDeleteEditorConfirmationModalOpen(false);
       setIsLoading(true);
-      deleteEditor(deleteEditorConfirmationModalId, () => {
+      deleteEditor(deleteEditorConfirmationModalId, json => {
+        if (json.error) {
+          setErrorMessage(json.error);
+        } 
+        const initialPageIndex = pageIndex;
         setIsLoading(false);
+        if (pageCount - 1 < initialPageIndex) {
+          gotoPage(pageCount - 1);
+        } else {
+          gotoPage(initialPageIndex);
+        }
       });
     }
-
-    const {
-        getTableProps,
-        getTableBodyProps,
-        headerGroups,
-        rows,
-        prepareRow,
-        page,
-        canPreviousPage,
-        canNextPage,
-        pageOptions,
-        pageCount,
-        gotoPage,
-        nextPage,
-        previousPage,
-        state: { pageIndex, pageSize }
-      } = useTable({
-        columns: tableColumns,
-        data: tableEditors,
-        initialState: { pageIndex: 0, pageSize: 10 }
-    }, usePagination);
 
     return (
         <div>
             {isLoading && <div>Loading...</div>}
             {!isLoading && 
               <div>
+                {errorMessage && <div className={styles.errorMessage}>{errorMessage}</div>}
                 <table {...getTableProps()}>
                   <thead>
                     {headerGroups.map(headerGroup => (
@@ -186,6 +216,9 @@ export default function EditorsTable() {
                   onRequestClose={() => setIsCreateEditorModalOpen(false)}
                 >
                   <h2>Create Editor</h2>
+                  {createEditorModalErrorMessage && (
+                    <div className={styles.errorMessage}>{createEditorModalErrorMessage}</div>
+                  )}
                   <form onSubmit={onCreateEditorFormSubmit}>
                     <label>
                       Name:
@@ -203,6 +236,9 @@ export default function EditorsTable() {
                   onRequestClose={() => setIsEditEditorModalOpen(false)}
                 >
                   <h2>Edit Editor</h2>
+                  {editEditorModalErrorMessage && (
+                    <div className={styles.errorMessage}>{editEditorModalErrorMessage}</div>
+                  )}
                   <form onSubmit={onEditEditorFormSubmit}>
                     <label>
                       Name:
