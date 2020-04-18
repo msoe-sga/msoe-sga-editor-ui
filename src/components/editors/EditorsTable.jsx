@@ -109,7 +109,7 @@ export default function EditorsTable() {
     function deleteEditorRowOnClick(row) {
       setDeleteEditorConfirmationModalId(row.original.id);
       setDeleteEditorConfirmationModalName(row.original.name);
-      setIsEditEditorModalOpen(true);
+      setIsDeleteEditorConfirmationModalOpen(true);
     }
 
     function openCreateEditorModal() {
