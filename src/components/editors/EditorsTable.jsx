@@ -1,5 +1,5 @@
 import React from 'react';
-import { getAllEditors, createEditor, updateEditor } from '../../api/editors';
+import { getAllEditors, createEditor, updateEditor, deleteEditor } from '../../api/editors';
 import { useSelector, useDispatch } from 'react-redux';
 import { setEditors } from '../../api/state/actions';
 import { useTable, usePagination } from 'react-table';
@@ -82,7 +82,6 @@ export default function EditorsTable() {
       getTableProps,
       getTableBodyProps,
       headerGroups,
-      rows,
       prepareRow,
       page,
       canPreviousPage,
@@ -92,7 +91,7 @@ export default function EditorsTable() {
       gotoPage,
       nextPage,
       previousPage,
-      state: { pageIndex, pageSize }
+      state: { pageIndex }
     } = useTable({
       columns: tableColumns,
       data: tableEditors,
@@ -144,20 +143,19 @@ export default function EditorsTable() {
       });
     }
 
-    function deleteEditor() {
-      setIsDeleteEditorConfirmationModalOpen(false);
+    function deleteEditorOnClick() {
       setIsLoading(true);
+      setIsDeleteEditorConfirmationModalOpen(false);
       deleteEditor(deleteEditorConfirmationModalId, json => {
         if (json.error) {
           setErrorMessage(json.error);
         } 
-        const initialPageIndex = pageIndex;
+        let pageIndexToSet = pageIndex;
         setIsLoading(false);
-        if (pageCount - 1 < initialPageIndex) {
-          gotoPage(pageCount - 1);
-        } else {
-          gotoPage(initialPageIndex);
+        if (pageCount - 1 < pageIndexToSet) {
+          pageIndexToSet = pageCount - 1;
         }
+        setInitialPageIndex(pageIndexToSet);
       });
     }
 
@@ -256,7 +254,7 @@ export default function EditorsTable() {
                   onRequestClose={() => setIsDeleteEditorConfirmationModalOpen(false)}
                 >
                   <div>Are you sure you want to delete the editor {deleteEditorConfirmationModalName}?</div>
-                  <button> onClick={deleteEditor}Yes</button>
+                  <button onClick={deleteEditorOnClick}>Yes</button>
                 </Modal>
               </div>}
         </div>
