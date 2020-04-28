@@ -37,6 +37,17 @@ export default function EditorsTable() {
         }
     ], []);
 
+    const modalStyles = {
+      content : {
+        top                   : '50%',
+        left                  : '50%',
+        right                 : 'auto',
+        bottom                : 'auto',
+        marginRight           : '-50%',
+        transform             : 'translate(-50%, -50%)'
+      }
+    };
+
     const editors = useSelector(state => state.editors);
     const [isLoading, setIsLoading] = React.useState(true);
     const [errorMessage, setErrorMessage] = React.useState(null);
@@ -206,6 +217,7 @@ export default function EditorsTable() {
                 <Modal
                   isOpen={isCreateEditorModalOpen}
                   onRequestClose={() => setIsCreateEditorModalOpen(false)}
+                  style={modalStyles}
                 >
                   <h2>Create Editor</h2>
                   {createEditorModalErrorMessage && (
@@ -226,6 +238,7 @@ export default function EditorsTable() {
                 <Modal
                   isOpen={isEditEditorModalOpen}
                   onRequestClose={() => setIsEditEditorModalOpen(false)}
+                  style={modalStyles}
                 >
                   <h2>Edit Editor</h2>
                   {editEditorModalErrorMessage && (
