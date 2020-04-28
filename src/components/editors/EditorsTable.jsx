@@ -224,15 +224,21 @@ export default function EditorsTable() {
                     <div className={styles.errorMessage}>{createEditorModalErrorMessage}</div>
                   )}
                   <form onSubmit={onCreateEditorFormSubmit}>
-                    <label>
-                      Name:
-                      <input type="text" value={createEditorModalName} onChange={(event) => setCreateEditorModalName(event.target.value)} />
-                    </label>
-                    <label>
-                      Email:
-                      <input type="text" value={createEditorModalEmail} onChange={(event) => setCreateEditorModalEmail(event.target.value)} />
-                    </label>
-                    <button type="submit">Save</button>
+                    <div className={styles.formControlContainer}>
+                      <label>
+                        Name: <input type="text" value={createEditorModalName} onChange={(event) => setCreateEditorModalName(event.target.value)} />
+                      </label>
+                    </div>
+                    <div className={styles.formControlContainer}>
+                      <label>
+                        Email:
+                        <input type="text" value={createEditorModalEmail} onChange={(event) => setCreateEditorModalEmail(event.target.value)} />
+                      </label>
+                    </div>
+                    <span>
+                      <button className={styles.modalButton} type="submit">Save</button>
+                      <button onClick={() => setIsCreateEditorModalOpen(false)}>Cancel</button>
+                    </span>
                   </form>
                 </Modal>
                 <Modal
@@ -245,23 +251,33 @@ export default function EditorsTable() {
                     <div className={styles.errorMessage}>{editEditorModalErrorMessage}</div>
                   )}
                   <form onSubmit={onEditEditorFormSubmit}>
-                    <label>
-                      Name:
-                      <input type="text" value={editEditorModalName} onChange={(event) => setEditEditorModalName(event.target.value)} />
-                    </label>
-                    <label>
-                      Email:
-                      <input type="text" value={editEditorModalEmail} onChange={(event) => setEditEditorModalEmail(event.target.value)} />
-                    </label>
-                    <button type="submit">Save</button>
+                    <div className={styles.formControlContainer}>
+                      <label>
+                        Name: <input type="text" value={editEditorModalName} onChange={(event) => setEditEditorModalName(event.target.value)} />
+                      </label>
+                    </div>
+                    <div className={styles.formControlContainer}>
+                      <label>
+                        Email: <input type="text" value={editEditorModalEmail} onChange={(event) => setEditEditorModalEmail(event.target.value)} />
+                      </label>
+                    </div>
+                    <span>
+                      <button className={styles.modalButton} type="submit">Save</button>
+                      <button onClick={() => setIsEditEditorModalOpen(false)}>Cancel</button>
+                    </span>
                   </form>
                 </Modal>
                 <Modal
                   isOpen={isDeleteEditorConfirmationModalOpen}
                   onRequestClose={() => setIsDeleteEditorConfirmationModalOpen(false)}
+                  style={modalStyles}
                 >
-                  <div>Are you sure you want to delete the editor {deleteEditorConfirmationModalName}?</div>
-                  <button onClick={deleteEditorOnClick}>Yes</button>
+                  <h2>Delete Editor</h2>
+                  <div className={styles.deleteConfirmationMessage}>Are you sure you want to delete the editor {deleteEditorConfirmationModalName}?</div>
+                  <span>
+                    <button className={styles.modalButton} onClick={deleteEditorOnClick}>Yes</button>
+                    <button onClick={() => setIsDeleteEditorConfirmationModalOpen(false)}>No</button>
+                  </span>
                 </Modal>
               </div>}
         </div>
