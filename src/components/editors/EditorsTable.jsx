@@ -6,6 +6,9 @@ import { useTable, usePagination } from 'react-table';
 import Modal from 'react-modal';
 import styles from './EditorsTable.module.scss';
 import Button from 'react-bootstrap/Button';
+import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import Dropdown from 'react-bootstrap/Dropdown';
+import DropdownButton from 'react-bootstrap/DropdownButton';
 
 export default function EditorsTable() {
     const tableColumns = React.useMemo(() => [
@@ -24,16 +27,12 @@ export default function EditorsTable() {
         },
         {
           Header: () => null,
-          id: 'edit',
+          id: 'actions',
           Cell: ({ row }) => (
-            <Button variant="primary" onClick={() => editEditorRowOnClick(row)}>Edit</Button>
-          )
-        },
-        {
-          Header: () => null,
-          id: 'delete',
-          Cell: ({ row }) => (
-            <Button variant="primary" onClick={() => deleteEditorRowOnClick(row)}>Delete</Button>
+            <DropdownButton as={ButtonGroup} title="Actions" id="bg-nested-dropdown">
+              <Dropdown.Item onClick={() => editEditorRowOnClick(row)} eventKey="1">Edit</Dropdown.Item>
+              <Dropdown.Item onClick={() => deleteEditorRowOnClick(row)} eventKey="2">Delete</Dropdown.Item>
+            </DropdownButton>
           )
         }
     ], []);
@@ -232,8 +231,7 @@ export default function EditorsTable() {
                     </div>
                     <div className={styles.formControlContainer}>
                       <label>
-                        Email:
-                        <input type="text" value={createEditorModalEmail} onChange={(event) => setCreateEditorModalEmail(event.target.value)} />
+                        Email: <input type="text" value={createEditorModalEmail} onChange={(event) => setCreateEditorModalEmail(event.target.value)} />
                       </label>
                     </div>
                     <span>
