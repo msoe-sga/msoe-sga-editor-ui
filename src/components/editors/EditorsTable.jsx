@@ -5,6 +5,7 @@ import { setEditors } from '../../api/state/actions';
 import { useTable, usePagination } from 'react-table';
 import Modal from 'react-modal';
 import styles from './EditorsTable.module.scss';
+import Button from 'react-bootstrap/Button';
 
 export default function EditorsTable() {
     const tableColumns = React.useMemo(() => [
@@ -25,14 +26,14 @@ export default function EditorsTable() {
           Header: () => null,
           id: 'edit',
           Cell: ({ row }) => (
-            <button onClick={() => editEditorRowOnClick(row)}>Edit</button>
+            <Button variant="primary" onClick={() => editEditorRowOnClick(row)}>Edit</Button>
           )
         },
         {
           Header: () => null,
           id: 'delete',
           Cell: ({ row }) => (
-            <button onClick={() => deleteEditorRowOnClick(row)}>Delete</button>
+            <Button variant="primary" onClick={() => deleteEditorRowOnClick(row)}>Delete</Button>
           )
         }
     ], []);
@@ -194,18 +195,18 @@ export default function EditorsTable() {
                   </tbody>
                 </table>
                 <div className={styles.pagination}>
-                  <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
+                  <Button variant="light" onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
                     {'<<'}
-                  </button>{' '}
-                  <button onClick={() => previousPage()} disabled={!canPreviousPage}>
+                  </Button>{' '}
+                  <Button variant="light" onClick={() => previousPage()} disabled={!canPreviousPage}>
                     {'<'}
-                  </button>{' '}
-                  <button onClick={() => nextPage()} disabled={!canNextPage}>
+                  </Button>{' '}
+                  <Button variant="light" onClick={() => nextPage()} disabled={!canNextPage}>
                     {'>'}
-                  </button>{' '}
-                  <button onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
+                  </Button>{' '}
+                  <Button variant="light" onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
                     {'>>'}
-                  </button>{' '}
+                  </Button>{' '}
                   <span>
                     Page{' '}
                       <strong>
@@ -213,7 +214,7 @@ export default function EditorsTable() {
                       </strong>{' '}
                     </span>
                 </div>
-                <button onClick={openCreateEditorModal} className={styles.createEditorButton}>Create Editor</button>
+                <Button variant="primary" onClick={openCreateEditorModal} className={styles.createEditorButton}>Create Editor</Button>
                 <Modal
                   isOpen={isCreateEditorModalOpen}
                   onRequestClose={() => setIsCreateEditorModalOpen(false)}
@@ -236,8 +237,8 @@ export default function EditorsTable() {
                       </label>
                     </div>
                     <span>
-                      <button className={styles.modalButton} type="submit">Save</button>
-                      <button onClick={() => setIsCreateEditorModalOpen(false)}>Cancel</button>
+                      <Button variant="primary" className={styles.modalButton} type="submit">Save</Button>
+                      <Button variant="primary" onClick={() => setIsCreateEditorModalOpen(false)}>Cancel</Button>
                     </span>
                   </form>
                 </Modal>
@@ -262,8 +263,8 @@ export default function EditorsTable() {
                       </label>
                     </div>
                     <span>
-                      <button className={styles.modalButton} type="submit">Save</button>
-                      <button onClick={() => setIsEditEditorModalOpen(false)}>Cancel</button>
+                      <Button variant="primary" className={styles.modalButton} type="submit">Save</Button>
+                      <Button variant="primary" onClick={() => setIsEditEditorModalOpen(false)}>Cancel</Button>
                     </span>
                   </form>
                 </Modal>
@@ -275,8 +276,8 @@ export default function EditorsTable() {
                   <h2>Delete Editor</h2>
                   <div className={styles.deleteConfirmationMessage}>Are you sure you want to delete the editor {deleteEditorConfirmationModalName}?</div>
                   <span>
-                    <button className={styles.modalButton} onClick={deleteEditorOnClick}>Yes</button>
-                    <button onClick={() => setIsDeleteEditorConfirmationModalOpen(false)}>No</button>
+                    <Button variant="primary" className={styles.modalButton} onClick={deleteEditorOnClick}>Yes</Button>
+                    <Button variant="primary" onClick={() => setIsDeleteEditorConfirmationModalOpen(false)}>No</Button>
                   </span>
                 </Modal>
               </div>}
