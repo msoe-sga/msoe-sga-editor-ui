@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/msoe-sg/msoe-sg-editor-ui.svg?branch=master)](https://travis-ci.org/msoe-sg/msoe-sg-editor-ui)
 ## Setup
 1. Follow the instructions from the wiki article [here](https://github.com/msoe-sg/msoe-sg-website/wiki/Environment-Setup) to setup your development environment.
 2. Follow the README instructions for the API project [here](https://github.com/msoe-sg/msoe-sg-editor-api) and launch the API on port 3000
