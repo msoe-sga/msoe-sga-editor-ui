@@ -10,7 +10,7 @@ export default function Login() {
     return (
         <section>
             <Logo />
-            <GoogleLogin clientId="112125019226-r2f9eiejmqv1o6077ea7vtbanie22gfb.apps.googleusercontent.com" 
+            <GoogleLogin clientId="139817711555-gre9cimukf1d3l3bfkd903ofbmdjrmd2.apps.googleusercontent.com" 
                          onSuccess={onLoginSuccess}
                          onFailure={err => console.log(err)}  />
         </section>
