@@ -11,8 +11,8 @@ export default function Login() {
         <section>
             <Logo />
             <GoogleLogin clientId="112125019226-r2f9eiejmqv1o6077ea7vtbanie22gfb.apps.googleusercontent.com" 
-                         onSuccess={onLoginSuccess} 
-                         uxMode="redirect" />
+                         onSuccess={onLoginSuccess}
+                         onFailure={err => console.log(err)}  />
         </section>
     );
 }
