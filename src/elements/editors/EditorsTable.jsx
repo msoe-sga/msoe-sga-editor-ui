@@ -50,6 +50,7 @@ export default function EditorsTable() {
     };
 
     const editors = useSelector(state => state.editors);
+    const authToken = useSelector(state => state.authToken);
     const [isLoading, setIsLoading] = React.useState(true);
     const [errorMessage, setErrorMessage] = React.useState(null);
     const [initialPageIndex, setInitialPageIndex] = React.useState(0);
@@ -73,7 +74,7 @@ export default function EditorsTable() {
     const history = useHistory();
 
     if (isLoading) {
-      getAllEditors(json => {
+      getAllEditors(authToken, json => {
         if (json.isAuthorized === false) {
           dispatch(setAuthError(json.error));
           history.push('/');
@@ -134,7 +135,7 @@ export default function EditorsTable() {
     }
 
     function onCreateEditorFormSubmit() {
-      createEditor(createEditorModalName, createEditorModalEmail, json => {
+      createEditor(createEditorModalName, createEditorModalEmail, authToken, json => {
         if (json.isAuthorized === false) {
           dispatch(setAuthError(json.error));
           history.push('/');
@@ -149,7 +150,7 @@ export default function EditorsTable() {
     }
 
     function onEditEditorFormSubmit() {
-      updateEditor(editEditorModalId, editEditorModalName, editEditorModalEmail, json => {
+      updateEditor(editEditorModalId, editEditorModalName, editEditorModalEmail, authToken, json => {
         if (json.isAuthorized === false) {
           dispatch(setAuthError(json.error));
           history.push('/');
@@ -164,7 +165,7 @@ export default function EditorsTable() {
     }
 
     function deleteEditorOnClick() {
-      deleteEditor(deleteEditorConfirmationModalId, json => {
+      deleteEditor(deleteEditorConfirmationModalId, authToken, json => {
         if (json.isAuthorized === false) {
           dispatch(setAuthError(json.error));
           history.push('/');

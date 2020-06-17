@@ -1,5 +1,4 @@
 import React from 'react';
-import GoogleLogin from 'react-google-login';
 import Logo from '../../components/logo/Logo';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
@@ -12,10 +11,28 @@ export default function Login() {
     const authError = useSelector(state => state.authError);
 
     function onLoginSuccess(response) {
-        dispatch(setAuthToken(response.tokenId));
+        dispatch(setAuthToken(response.wc.id_token));
         dispatch(setAuthError(null));
+        response.disconnect();
         history.push('/editors');
     }
+
+    React.useEffect(() => {
+        window.gapi.load('auth2', () => {
+            window.gapi.auth2.init({
+                client_id: '139817711555-gre9cimukf1d3l3bfkd903ofbmdjrmd2.apps.googleusercontent.com'
+            });
+
+            window.gapi.load('signin2', function() {
+                const opts = {
+                    client_id: '139817711555-gre9cimukf1d3l3bfkd903ofbmdjrmd2.apps.googleusercontent.com',
+                    onsuccess: onLoginSuccess,
+                    onfailure: (error) => console.log(error)
+                };
+                window.gapi.signin2.render('loginButton', opts);
+            });
+        });
+    });
 
     return (
         <section>
@@ -25,9 +42,7 @@ export default function Login() {
                     {authError}
                 </Alert>
             )}
-            <GoogleLogin clientId="139817711555-gre9cimukf1d3l3bfkd903ofbmdjrmd2.apps.googleusercontent.com" // TODO: Update this to a permanant client id and access it from the environment
-                         onSuccess={onLoginSuccess}
-                         onFailure={err => console.log(err)}  />
+            <button id="loginButton">Login with Google</button>
         </section>
     );
 }
