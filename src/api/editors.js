@@ -19,19 +19,6 @@ export function getAllEditors(googleToken, callback) {
         .then(json => validCallback(json));
 }
 
-export function getEditorByEmail(email, googleToken, callback) {
-    const requestOptions = {
-        method: 'GET',
-        headers: getHttpHeaders(googleToken)
-    }
-
-    const validCallback = getValidCallback(callback);
-
-    fetch(`${url}/editors?email=${email}`, requestOptions)
-        .then(res => res.json())
-        .then(json => validCallback(json));
-}
-
 export function createEditor(name, email, googleToken, callback) {
     const requestOptions = {
         method: 'POST',
