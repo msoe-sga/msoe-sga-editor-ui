@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { setAuthToken, setAuthError } from '../../api/state/actions';
 import Alert from 'react-bootstrap/Alert';
+import styles from './Login.module.scss';
 
 export default function Login() {
     const dispatch = useDispatch();
@@ -35,7 +36,7 @@ export default function Login() {
     });
 
     return (
-        <section>
+        <section className={styles.loginContainer}>
             <Logo />
             {authError && (
                 <Alert variant='danger'>
