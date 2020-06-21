@@ -1,7 +1,7 @@
 import React from 'react';
 import { getAllEditors, createEditor, updateEditor, deleteEditor } from '../../api/editors';
 import { useSelector, useDispatch } from 'react-redux';
-import { setEditors } from '../../api/state/actions';
+import { setEditors, setAuthError } from '../../api/state/actions';
 import { useTable, usePagination } from 'react-table';
 import Modal from 'react-modal';
 import styles from './EditorsTable.module.scss';
@@ -9,6 +9,7 @@ import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
+import { useHistory } from 'react-router-dom';
 
 export default function EditorsTable() {
     const tableColumns = React.useMemo(() => [
@@ -49,6 +50,7 @@ export default function EditorsTable() {
     };
 
     const editors = useSelector(state => state.editors);
+    const authToken = useSelector(state => state.authToken);
     const [isLoading, setIsLoading] = React.useState(true);
     const [errorMessage, setErrorMessage] = React.useState(null);
     const [initialPageIndex, setInitialPageIndex] = React.useState(0);
@@ -69,10 +71,14 @@ export default function EditorsTable() {
     const [deleteEditorConfirmationModalName, setDeleteEditorConfirmationModalName] = React.useState('');
 
     const dispatch = useDispatch();
+    const history = useHistory();
 
     if (isLoading) {
-      getAllEditors(json => {
-        if (json.error) {
+      getAllEditors(authToken, json => {
+        if (json.isAuthorized === false) {
+          dispatch(setAuthError(json.error));
+          history.push('/');
+        } else if (json.error) {
           setErrorMessage(json.error);
         } else {
           dispatch(setEditors(json));
@@ -129,8 +135,11 @@ export default function EditorsTable() {
     }
 
     function onCreateEditorFormSubmit() {
-      createEditor(createEditorModalName, createEditorModalEmail, json => {
-        if (json.error) {
+      createEditor(createEditorModalName, createEditorModalEmail, authToken, json => {
+        if (json.isAuthorized === false) {
+          dispatch(setAuthError(json.error));
+          history.push('/');
+        } else if (json.error) {
           setCreateEditorModalErrorMessage(json.error);
         } else {
           setInitialPageIndex(Math.floor((editors.length + 1) / pageSize));
@@ -141,8 +150,11 @@ export default function EditorsTable() {
     }
 
     function onEditEditorFormSubmit() {
-      updateEditor(editEditorModalId, editEditorModalName, editEditorModalEmail, json => {
-        if (json.error) {
+      updateEditor(editEditorModalId, editEditorModalName, editEditorModalEmail, authToken, json => {
+        if (json.isAuthorized === false) {
+          dispatch(setAuthError(json.error));
+          history.push('/');
+        } else if (json.error) {
           setEditEditorModalErrorMessage(json.error);
         } else {
           setInitialPageIndex(pageIndex);
@@ -153,8 +165,11 @@ export default function EditorsTable() {
     }
 
     function deleteEditorOnClick() {
-      deleteEditor(deleteEditorConfirmationModalId, json => {
-        if (json.error) {
+      deleteEditor(deleteEditorConfirmationModalId, authToken, json => {
+        if (json.isAuthorized === false) {
+          dispatch(setAuthError(json.error));
+          history.push('/');
+        } else if (json.error) {
           setErrorMessage(json.error);
         } else {
           setInitialPageIndex(Math.floor((editors.length - 1) / pageSize));

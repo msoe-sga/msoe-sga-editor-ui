@@ -1,15 +1,14 @@
 import React from 'react';
-import { Header } from '../components/layout/Layout';
-import Sidebar from '../components/Sidebar/Sidebar';
+import Header from '../../components/header/Header';
+import Sidebar from '../../components/Sidebar/Sidebar';
 import styles from './PageLayout.module.scss';
-import logo from '../assets/logo.png';
+import Logo from '../../components/logo/Logo';
 
 export default function PageLayout({ children }) {
     return (
         <>
             <Header>
-                <img alt="Logo" src={logo} className={styles.logo}></img>
-                <h1>MSOE Student Government Website Editor</h1>
+                <Logo />
             </Header>
             <section className={styles.pageLayoutContainer}>
                 <Sidebar />
