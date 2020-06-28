@@ -1,28 +1,25 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import styles from './Sidebar.module.scss';
+import { Nav } from 'react-bootstrap';
+import './Sidebar.scss';
 
 const paths = {
     editors: {
-        path: '/',
+        path: '/editors',
         displayText: 'Editors'
     }
 };
 
 export default function Sidebar() {
     return (
-        <div className={styles.sidebarContainer}>
+        <Nav className="col-md-12 d-none d-md-block bg-primary sidebar">
             {Object.keys(paths).map(path => {
-                const toPath = `${paths[path].path}`;
+                const href = `${paths[path].path}`;
                 return (
-                    <Link
-                        to={toPath}
-                        key={path}
-                    >
-                        <span>{paths[path].displayText}</span>
-                    </Link>
+                    <Nav.Item className="nav-item active">
+                        <Nav.Link href={href}>{paths[path].displayText}</Nav.Link>
+                    </Nav.Item>
                 );
             })}
-        </div>
+        </Nav>
     );
 }
