@@ -1,0 +1,21 @@
+{"posts": [
+{
+   "title" : "How's Your Summer (Really) Going?",
+   "author" : "Ronald McDonald",
+   "date": "2020-06-15T23:28:56.782Z",
+   "text" : "Do you know something? Summer is hard, especially during a pandemic."
+},
+{
+   "title" : "Handling Confusion in the Front-End",
+   "author" : "Joe Schmoe",
+   "date": "2020-06-21T23:28:56.782Z",
+   "text" : "React learning is difficult. There's not a better way around it."
+
+},
+{
+   "title" : "The Reasons Software Engineers Aren't Nerds",
+   "author" : "Grace Fleming",
+   "date": "2020-07-04T23:28:56.782Z",
+   "text" : "Software Engineers arent nerds. Let me say that again."
+
+}]}
