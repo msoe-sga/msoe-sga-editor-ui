@@ -18,15 +18,18 @@ export default function Login() {
         history.push('/editors');
     }
 
+    console.log('Client Id');
+    console.log(process.env.REACT_APP_GOOGLE_CLIENT_ID);
+    
     React.useEffect(() => {
         window.gapi.load('auth2', () => {
             window.gapi.auth2.init({
-                client_id: '139817711555-gre9cimukf1d3l3bfkd903ofbmdjrmd2.apps.googleusercontent.com'
+                client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID
             });
 
             window.gapi.load('signin2', function() {
                 const opts = {
-                    client_id: '139817711555-gre9cimukf1d3l3bfkd903ofbmdjrmd2.apps.googleusercontent.com',
+                    client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID,
                     onsuccess: onLoginSuccess,
                     onfailure: (error) => console.log(error)
                 };
