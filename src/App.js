@@ -6,12 +6,14 @@ import EditorsTable from './elements/editors/EditorsTable';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import allReducers from './api/state/reducers';
-import PostListPage from './elements/posts/PostListPage';
+import PostListPage from './elements/postListing/PostListPage';
+import NewPostPage from './elements/newPost/NewPostPage';
 const paths = {
     root: '/',
     editors: '/editors',
     posts: '/posts',
-    editpost: '/posts/edit'
+    editPost: '/posts/edit',
+    newPost: '/posts/new'
 }
 
 const store = createStore(allReducers);
@@ -36,9 +38,15 @@ export default function App() {
                         </PageLayout>
                     </Route>
 
-                    <Route exact={true} path={paths.editpost}>
+                    <Route exact={true} path={paths.editPost}>
                         <PageLayout>
                             <div>you can edit your post soon</div>
+                        </PageLayout>
+                    </Route>
+
+                    <Route exact={true} path={paths.newPost}>
+                        <PageLayout>
+                            <NewPostPage/>
                         </PageLayout>
                     </Route>
 
