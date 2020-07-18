@@ -1,5 +1,7 @@
 import * as actions from './actions';
 import { combineReducers } from 'redux';
+import { persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
 
 function editorsReducer(state=[], action) {
     switch (action.type) {
@@ -34,4 +36,12 @@ const allReducers = combineReducers({
     authError: authErrorReducer
 });
 
-export default allReducers;
+const persistConfig = {
+    key: 'root',
+    storage,
+    whitelist: ['authToken']
+}
+
+const persistedReducer = persistReducer(persistConfig, allReducers);
+
+export default persistedReducer;
