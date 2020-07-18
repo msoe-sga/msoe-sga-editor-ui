@@ -30,6 +30,11 @@ function EditEditorModal({ isModalOpen, closeModalMethod, setTableIndexMethod, m
     const [editorName, setEditorName] = React.useState(initialEditorName);
     const [editorEmail, setEditorEmail] = React.useState(initialEditorEmail);
 
+    React.useEffect(() => {
+        setEditorName(initialEditorName);
+        setEditorEmail(initialEditorEmail);
+    }, [initialEditorName, initialEditorEmail]);
+
     function formSubmit() {
       if (newEditor) {
         createEditor(editorName, editorEmail, authToken, json => {
