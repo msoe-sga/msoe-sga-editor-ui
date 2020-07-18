@@ -75,7 +75,7 @@ export default function EditorsTable() {
           setIsLoading(false);
         });
       }
-    }, [isLoading])
+    });
 
     const tableEditors = React.useMemo(() => editors.map(editor => {
       return {

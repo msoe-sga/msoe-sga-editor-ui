@@ -65,11 +65,11 @@ function DeleteEditorModal({ isModalOpen, closeModalMethod, setTableIndexMethod,
 }
 
 DeleteEditorModal.propTypes = {
-    isDeleteEditorConfirmationModalOpen: PropTypes.bool.isRequired,
+    isDeleteEditorConfirmationModalOpen: PropTypes.bool,
     closeModalMethod: PropTypes.func.isRequired,
     setTableIndexMethod: PropTypes.func.isRequired,
     editorName: PropTypes.string.isRequired,
-    editorId: PropTypes.string.isRequired
+    editorId: PropTypes.string
 }
 
 export default DeleteEditorModal;
