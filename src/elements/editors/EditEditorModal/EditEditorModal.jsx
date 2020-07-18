@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { createEditor, updateEditor } from '../../../api/editors';
-import { setEditors, setAuthError } from '../../../api/state/actions';
+import { setAuthError } from '../../../api/state/actions';
 
 function EditEditorModal({ isModalOpen, closeModalMethod, setTableIndexMethod, modalTitle, editorId, initialEditorName, initialEditorEmail, newEditor }) {
     const modalStyles = {
@@ -24,7 +24,6 @@ function EditEditorModal({ isModalOpen, closeModalMethod, setTableIndexMethod, m
     const history = useHistory();
     
     const authToken = useSelector(state => state.authToken);
-    const editors = useSelector(state => state.editors);
 
     const [errorMessage, setErrorMessage] = React.useState(null);
     const [editorName, setEditorName] = React.useState(initialEditorName);
@@ -45,10 +44,6 @@ function EditEditorModal({ isModalOpen, closeModalMethod, setTableIndexMethod, m
             setErrorMessage(json.error);
           } else {
             setTableIndexMethod();
-            let newEditors = editors;
-            newEditors.push(json);
-            newEditors = newEditors.sort((a, b) => a.name.localeCompare(b.name));
-            dispatch(setEditors(newEditors)); 
             closeModalMethod();
           }
         });
@@ -61,10 +56,6 @@ function EditEditorModal({ isModalOpen, closeModalMethod, setTableIndexMethod, m
             setErrorMessage(json.error);
           } else {
             setTableIndexMethod();
-            let newEditors = editors.filter(editor => editor.id !== editorId);
-            newEditors.push(json);
-            newEditors = newEditors.sort((a, b) => a.name.localeCompare(b.name));
-            dispatch(setEditors(newEditors)); 
             closeModalMethod();
           }
         });

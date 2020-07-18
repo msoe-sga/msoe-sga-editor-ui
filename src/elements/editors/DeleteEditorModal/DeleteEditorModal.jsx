@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import styles from './DeleteEditorModal.module.scss';
-import { setEditors, setAuthError } from '../../../api/state/actions';
+import { setAuthError } from '../../../api/state/actions';
 import { deleteEditor } from '../../../api/editors';
 
 
@@ -25,7 +25,6 @@ function DeleteEditorModal({ isModalOpen, closeModalMethod, setTableIndexMethod,
     const history = useHistory();
 
     const authToken = useSelector(state => state.authToken);
-    const editors = useSelector(state => state.editors);
     
     const [errorMessage, setErrorMessage] = React.useState(null);
 
@@ -38,8 +37,6 @@ function DeleteEditorModal({ isModalOpen, closeModalMethod, setTableIndexMethod,
           setErrorMessage(json.error);
         } else {
           setTableIndexMethod();
-          const newEditors = editors.filter(editor => editor.id !== editorId).sort((a, b) => a.name.localeCompare(b.name));
-          dispatch(setEditors(newEditors));
           closeModalMethod();
         }
       });
