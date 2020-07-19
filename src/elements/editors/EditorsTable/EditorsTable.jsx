@@ -1,7 +1,7 @@
 import React from 'react';
 import { getAllEditors } from '../../../api/editors';
 import { useSelector, useDispatch } from 'react-redux';
-import { setEditors, setAuthError } from '../../../api/state/actions';
+import { setEditors, setEditorTableIndex, setAuthError } from '../../../api/state/actions';
 import { useTable, usePagination } from 'react-table';
 import styles from './EditorsTable.module.scss';
 import Button from 'react-bootstrap/Button';
@@ -40,10 +40,11 @@ export default function EditorsTable() {
     ], []);
 
     const editors = useSelector(state => state.editors);
+    const editorsTableIndex = useSelector(state => state.editorsTableIndex);
     const authToken = useSelector(state => state.authToken);
+
     const [isLoading, setIsLoading] = React.useState(true);
     const [errorMessage, setErrorMessage] = React.useState(null);
-    const [initialPageIndex, setInitialPageIndex] = React.useState(0);
 
     const [isCreateEditorModalOpen, setIsCreateEditorModalOpen] = React.useState(false);
     const [createEditorModalName, setCreateEditorModalName] = React.useState('');
@@ -102,7 +103,7 @@ export default function EditorsTable() {
     } = useTable({
       columns: tableColumns,
       data: tableEditors,
-      initialState: { pageIndex: initialPageIndex, pageSize: 10 }
+      initialState: { pageIndex: editorsTableIndex, pageSize: 10 }
     }, usePagination);
 
     function editEditorRowOnClick(row) {
@@ -177,7 +178,7 @@ export default function EditorsTable() {
                 <EditEditorModal
                   isModalOpen={isCreateEditorModalOpen}
                   closeModalMethod={() => setIsCreateEditorModalOpen(false)}
-                  setTableIndexMethod={() => setInitialPageIndex(Math.floor((editors.length + 1) / pageSize))}
+                  setTableIndexMethod={() => dispatch(setEditorTableIndex(Math.floor((editors.length + 1) / pageSize)))}
                   modalTitle="Create Editor"
                   initialEditorName={createEditorModalName}
                   initialEditorEmail={createEditorModalEmail}
@@ -186,7 +187,7 @@ export default function EditorsTable() {
                 <EditEditorModal
                   isModalOpen={isEditEditorModalOpen}
                   closeModalMethod={() => setIsEditEditorModalOpen(false)}
-                  setTableIndexMethod={() => setInitialPageIndex(pageIndex)}
+                  setTableIndexMethod={() => dispatch(setEditorTableIndex(pageIndex))}
                   modalTitle="Edit Editor"
                   editorId={editEditorModalId}
                   initialEditorName={editEditorModalName}
@@ -196,7 +197,7 @@ export default function EditorsTable() {
                 <DeleteEditorModal
                   isModalOpen={isDeleteEditorConfirmationModalOpen}
                   closeModalMethod={() => setIsDeleteEditorConfirmationModalOpen(false)}
-                  setTableIndexMethod={() => setInitialPageIndex(Math.floor((editors.length + 1) / pageSize))}
+                  setTableIndexMethod={() => dispatch(setEditorTableIndex(Math.floor((editors.length + 1) / pageSize)))}
                   editorName={deleteEditorConfirmationModalName}
                   editorId={deleteEditorConfirmationModalId}
                 />

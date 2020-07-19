@@ -12,6 +12,15 @@ function editorsReducer(state=[], action) {
     }
 }
 
+function editorsTableIndexReducer(state=0, action) {
+    switch (action.type) {
+        case actions.editorTableIndexAction:
+            return action.payload;
+        default:
+            return state;
+    }
+}
+
 function authTokenReducer(state=null, action) {
     switch (action.type) {
         case actions.authTokenAction:
@@ -32,6 +41,7 @@ function authErrorReducer(state=null, action) {
 
 const allReducers = combineReducers({
     editors: editorsReducer,
+    editorsTableIndex: editorsTableIndexReducer,
     authToken: authTokenReducer,
     authError: authErrorReducer
 });
