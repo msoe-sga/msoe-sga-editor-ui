@@ -6,6 +6,14 @@ export function setEditors(editors) {
     });
 }
 
+export const editorTableIndexAction = 'setEditorTableIndex';
+export function setEditorTableIndex(editorTableIndex) {
+    return ({
+        type: editorTableIndexAction,
+        payload: editorTableIndex
+    });
+}
+
 export const authTokenAction = 'setAuthToken';
 export function setAuthToken(authToken) {
     return ({
