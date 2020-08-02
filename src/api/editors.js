@@ -1,4 +1,4 @@
-import { getValidCallback } from './helpers';
+import { getValidCallback, getHttpHeaders } from './helpers';
 
 let url = null;
 
@@ -65,12 +65,4 @@ export function deleteEditor(id, googleToken, callback) {
     fetch(`${url}/editors?id=${id}`, requestOptions)
         .then(res => res.json())
         .then(json => validCallback(json))
-}
-
-function getHttpHeaders(googleToken) {
-    return {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
-        'Authorization': `Bearer ${googleToken}`
-    };
 }
