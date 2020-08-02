@@ -35,3 +35,19 @@ export function getAboutPreview(googleToken, markdown) {
             .catch(err => reject(err));
     })
 }
+
+export function editAboutPageOnMaster(googleToken, markdown, callback) {
+    const requestOptions = {
+        method: 'PUT',
+        headers: getHttpHeaders(googleToken),
+        body: JSON.stringify({
+            text: markdown
+        })
+    };
+
+    const validCallback = getValidCallback(callback);
+
+    fetch(`${url}/about`, requestOptions)
+        .then(res => res.json())
+        .then(json => validCallback(json));
+}
