@@ -2,7 +2,7 @@ import React from 'react';
 import ReactMde from 'react-mde';
 import styles from './AboutEditPage.module.scss';
 import { useSelector, useDispatch } from 'react-redux';
-import { getAboutPage } from '../../api/about';
+import { getAboutPage, getAboutPreview } from '../../api/about';
 import { useHistory } from 'react-router-dom';
 import { setAuthError } from '../../api/state/actions';
 
@@ -17,7 +17,7 @@ export default function AboutEditPage() {
 
     React.useEffect(() => {
         getAboutPage(authToken, json => {
-            if (!json.isAuthorized) {
+            if (json.isAuthorized === false) {
                 dispatch(setAuthError(json.error));
                 history.push('/');
             }
@@ -33,6 +33,7 @@ export default function AboutEditPage() {
                 selectedTab={selectedTab}
                 onTabChange={setSelectedTab}
                 minEditorHeight={650}
+                generateMarkdownPreview={markdown => getAboutPreview(authToken, markdown)}
              />
         </div>
     );
