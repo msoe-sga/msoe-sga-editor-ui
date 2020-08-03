@@ -2,13 +2,14 @@ import React from 'react';
 import ReactMde from 'react-mde';
 import styles from './AboutEditPage.module.scss';
 import { useSelector, useDispatch } from 'react-redux';
-import { getAboutPage, getAboutPreview, editAboutPageOnMaster } from '../../api/about';
+import { getAboutPage, getAboutPreview, editAboutPageOnMaster, editPageOnBranch } from '../../api/about';
 import { useHistory } from 'react-router-dom';
 import { setAuthError } from '../../api/state/actions';
 import Button from 'react-bootstrap/Button';
 
 export default function AboutEditPage() {
     const [value, setValue] = React.useState('');
+    const [ref, setRef] = React.useState(null);
     const [selectedTab, setSelectedTab] = React.useState('write');
     
     const authToken = useSelector(state => state.authToken);
@@ -23,16 +24,26 @@ export default function AboutEditPage() {
                 history.push('/');
             }
             setValue(json.contents);
+            setRef(json.github_ref);
         });
     }, [authToken, dispatch, history]);
     
     function formSubmit() {
-        editAboutPageOnMaster(authToken, value, json => {
-            if (json.isAuthorized === false) {
-                dispatch(setAuthError(json.error));
-                history.push('/');
-            }
-        });
+        if (ref) {
+            editPageOnBranch(authToken, markdown, ref, json => {
+                if (json.isAuthorized === false) {
+                    dispatch(setAuthError(json.error));
+                    history.push('/');
+                }
+            });
+        } else {
+            editAboutPageOnMaster(authToken, value, json => {
+                if (json.isAuthorized === false) {
+                    dispatch(setAuthError(json.error));
+                    history.push('/');
+                }
+            });
+        }
     }
 
     return (

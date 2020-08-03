@@ -51,3 +51,20 @@ export function editAboutPageOnMaster(googleToken, markdown, callback) {
         .then(res => res.json())
         .then(json => validCallback(json));
 }
+
+export function editPageOnBranch(googleToken, markdown, ref, callback) {
+    const requestOptions = {
+        method: 'PUT',
+        headers: getHttpHeaders(googleToken),
+        body: JSON.stringify({
+            text: markdown,
+            ref: ref
+        })
+    };
+
+    const validCallback = getValidCallback(callback);
+
+    fetch(`${url}/about`, requestOptions)
+        .then(res => res.json())
+        .then(json => validCallback(json));
+}
