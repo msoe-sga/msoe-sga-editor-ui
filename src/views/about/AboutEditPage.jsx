@@ -14,6 +14,7 @@ export default function AboutEditPage() {
     const [pullRequestUrl, setPullRequestUrl] = React.useState(null);
     const [selectedTab, setSelectedTab] = React.useState('write');
     const [showSaveSuccessfulAlert, setShowSaveSuccessfulAlert] = React.useState(false);
+    const [readOnly, setReadOnly] = React.useState(false);
     
     const authToken = useSelector(state => state.authToken);
     
@@ -33,13 +34,17 @@ export default function AboutEditPage() {
     }, [authToken, dispatch, history]);
     
     function onSaveClick() {
+        document.body.style.cursor = 'wait';
+        setReadOnly(true);
         if (ref) {
             editPageOnBranch(authToken, value, ref, json => {
-                if (json.isAuthorized === false) {
+                if (json && json.isAuthorized === false) {
                     dispatch(setAuthError(json.error));
                     history.push('/');
                 }
                 setShowSaveSuccessfulAlert(true);
+                setReadOnly(false);
+                document.body.style.cursor = 'default';
             });
         } else {
             editAboutPageOnMaster(authToken, value, json => {
@@ -47,8 +52,11 @@ export default function AboutEditPage() {
                     dispatch(setAuthError(json.error));
                     history.push('/');
                 }
-                setPullRequestUrl(json.result);
+                setRef(json.github_ref);
+                setPullRequestUrl(json.pull_request_url);
                 setShowSaveSuccessfulAlert(true);
+                setReadOnly(false);
+                document.body.style.cursor = 'default';
             });
         }
     }
@@ -56,7 +64,7 @@ export default function AboutEditPage() {
     return (
         <div>
             {pullRequestUrl && (
-                <Alert variant='info'>This version of the about page is currently under review <Alert.Link href={pullRequestUrl}>here</Alert.Link>.{' '}</Alert>
+                <Alert variant='info'>This version of the about page is currently under review <Alert.Link href={pullRequestUrl}>here</Alert.Link>.</Alert>
             )}
             {showSaveSuccessfulAlert && (
                 <Alert variant='success' onClose={() => setShowSaveSuccessfulAlert(false)} dismissible>About Page Save Successfuly.</Alert>
@@ -68,6 +76,8 @@ export default function AboutEditPage() {
                     selectedTab={selectedTab}
                     onTabChange={setSelectedTab}
                     minEditorHeight={650}
+                    readOnly={readOnly}
+                    loadingPreview="Loading..."
                     generateMarkdownPreview={markdown => getAboutPreview(authToken, markdown)}
                  />
                 <Button variant="primary" className={styles.aboutSubmitButton} onClick={onSaveClick}>Save</Button>
