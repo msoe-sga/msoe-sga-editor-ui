@@ -13,6 +13,7 @@ export default function AboutEditPage() {
     const [ref, setRef] = React.useState(null);
     const [pullRequestUrl, setPullRequestUrl] = React.useState(null);
     const [selectedTab, setSelectedTab] = React.useState('write');
+    const [showSaveSuccessfulAlert, setShowSaveSuccessfulAlert] = React.useState(false);
     
     const authToken = useSelector(state => state.authToken);
     
@@ -31,13 +32,14 @@ export default function AboutEditPage() {
         });
     }, [authToken, dispatch, history]);
     
-    function formSubmit() {
+    function onSaveClick() {
         if (ref) {
-            editPageOnBranch(authToken, markdown, ref, json => {
+            editPageOnBranch(authToken, value, ref, json => {
                 if (json.isAuthorized === false) {
                     dispatch(setAuthError(json.error));
                     history.push('/');
                 }
+                setShowSaveSuccessfulAlert(true);
             });
         } else {
             editAboutPageOnMaster(authToken, value, json => {
@@ -45,14 +47,19 @@ export default function AboutEditPage() {
                     dispatch(setAuthError(json.error));
                     history.push('/');
                 }
+                setPullRequestUrl(json.result);
+                setShowSaveSuccessfulAlert(true);
             });
         }
     }
 
     return (
-        <form onSubmit={formSubmit}>
+        <div>
             {pullRequestUrl && (
                 <Alert variant='info'>This version of the about page is currently under review <Alert.Link href={pullRequestUrl}>here</Alert.Link>.{' '}</Alert>
+            )}
+            {showSaveSuccessfulAlert && (
+                <Alert variant='success' onClose={() => setShowSaveSuccessfulAlert(false)} dismissible>About Page Save Successfuly.</Alert>
             )}
             <div className={styles.editContainer}>
                 <ReactMde
@@ -63,8 +70,8 @@ export default function AboutEditPage() {
                     minEditorHeight={650}
                     generateMarkdownPreview={markdown => getAboutPreview(authToken, markdown)}
                  />
-                <Button variant="primary" className="aboutSubmitButton" type="submit">Save</Button>
+                <Button variant="primary" className={styles.aboutSubmitButton} onClick={onSaveClick}>Save</Button>
             </div>
-        </form>
+        </div>
     );
 }
