@@ -2,7 +2,8 @@ import React from 'react';
 import ReactMde from 'react-mde';
 import styles from './AboutEditPage.module.scss';
 import { useSelector, useDispatch } from 'react-redux';
-import { getAboutPage, getAboutPreview, editAboutPageOnMaster, editPageOnBranch } from '../../api/about';
+import { getAboutPage, editAboutPageOnMaster, editPageOnBranch } from '../../api/about';
+import { getKramdownPreview } from '../../api/preview';
 import { useHistory } from 'react-router-dom';
 import { setAuthError } from '../../api/state/actions';
 import Button from 'react-bootstrap/Button';
@@ -78,7 +79,7 @@ export default function AboutEditPage() {
                     minEditorHeight={650}
                     readOnly={readOnly}
                     loadingPreview="Loading..."
-                    generateMarkdownPreview={markdown => getAboutPreview(authToken, markdown)}
+                    generateMarkdownPreview={markdown => getKramdownPreview(authToken, markdown)}
                  />
                 <Button variant="primary" className={styles.aboutSubmitButton} onClick={onSaveClick}>Save</Button>
             </div>

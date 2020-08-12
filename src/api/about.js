@@ -19,23 +19,6 @@ export function getAboutPage(googleToken, callback) {
         .then(json => validCallback(json));
 }
 
-export function getAboutPreview(googleToken, markdown) {
-    return new Promise((resolve, reject) => {
-        const requestOptions = {
-            method: 'POST',
-            headers: getHttpHeaders(googleToken),
-            body: JSON.stringify({
-                text: markdown
-            })
-        };
-        
-        fetch(`${url}/about/preview`, requestOptions)
-            .then(res => res.json())
-            .then(json => resolve(json.result))
-            .catch(err => reject(err));
-    })
-}
-
 export function editAboutPageOnMaster(googleToken, markdown, callback) {
     const requestOptions = {
         method: 'PUT',
