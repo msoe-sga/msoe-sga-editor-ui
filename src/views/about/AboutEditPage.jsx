@@ -13,6 +13,7 @@ export default function AboutEditPage() {
     const [value, setValue] = React.useState('');
     const [ref, setRef] = React.useState(null);
     const [pullRequestUrl, setPullRequestUrl] = React.useState(null);
+    const [error, setError] = React.useState(null);
     const [selectedTab, setSelectedTab] = React.useState('write');
     const [showSaveSuccessfulAlert, setShowSaveSuccessfulAlert] = React.useState(false);
     const [readOnly, setReadOnly] = React.useState(false);
@@ -42,8 +43,11 @@ export default function AboutEditPage() {
                 if (json && json.isAuthorized === false) {
                     dispatch(setAuthError(json.error));
                     history.push('/');
+                } else if (json.error) {
+                    setError(json.error);
+                } else {
+                    setShowSaveSuccessfulAlert(true);
                 }
-                setShowSaveSuccessfulAlert(true);
                 setReadOnly(false);
                 document.body.style.cursor = 'default';
             });
@@ -52,10 +56,13 @@ export default function AboutEditPage() {
                 if (json.isAuthorized === false) {
                     dispatch(setAuthError(json.error));
                     history.push('/');
+                } else if (json.error) {
+                    setError(json.error);
+                } else {
+                    setRef(json.github_ref);
+                    setPullRequestUrl(json.pull_request_url);
+                    setShowSaveSuccessfulAlert(true);
                 }
-                setRef(json.github_ref);
-                setPullRequestUrl(json.pull_request_url);
-                setShowSaveSuccessfulAlert(true);
                 setReadOnly(false);
                 document.body.style.cursor = 'default';
             });
@@ -66,6 +73,9 @@ export default function AboutEditPage() {
         <div>
             {pullRequestUrl && (
                 <Alert variant='info'>This version of the about page is currently under review <Alert.Link href={pullRequestUrl}>here</Alert.Link>.</Alert>
+            )}
+            {error && (
+                <Alert variant='error'>{error}</Alert>
             )}
             {showSaveSuccessfulAlert && (
                 <Alert variant='success' onClose={() => setShowSaveSuccessfulAlert(false)} dismissible>About Page Save Successfuly.</Alert>
