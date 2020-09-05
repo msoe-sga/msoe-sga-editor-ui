@@ -6,6 +6,10 @@ const paths = {
     editors: {
         path: '/editors',
         displayText: 'Editors'
+    },
+    about: {
+        path: '/about',
+        displayText: 'Edit About Page'
     }
 };
 
@@ -15,7 +19,7 @@ export default function Sidebar() {
             {Object.keys(paths).map(path => {
                 const href = `${paths[path].path}`;
                 return (
-                    <Nav.Item className="nav-item active">
+                    <Nav.Item>
                         <Nav.Link href={href}>{paths[path].displayText}</Nav.Link>
                     </Nav.Item>
                 );
