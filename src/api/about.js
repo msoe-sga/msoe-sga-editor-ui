@@ -6,7 +6,7 @@ if (process.env.NODE_ENV === 'development') {
     url = "http://localhost:3000";    
 }
 
-export function getAllEditors(googleToken, callback) {
+export function getAboutPage(googleToken, callback) {
     const requestOptions = {
         method: 'GET',
         headers: getHttpHeaders(googleToken)
@@ -14,55 +14,40 @@ export function getAllEditors(googleToken, callback) {
 
     const validCallback = getValidCallback(callback);
 
-    fetch(`${url}/editors`, requestOptions)
+    fetch(`${url}/about`, requestOptions)
         .then(res => res.json())
         .then(json => validCallback(json));
 }
 
-export function createEditor(name, email, googleToken, callback) {
-    const requestOptions = {
-        method: 'POST',
-        headers: getHttpHeaders(googleToken),
-        body: JSON.stringify({
-            'name': name,
-            'email': email
-        })
-    };
-
-    const validCallback = getValidCallback(callback);
-
-    fetch(`${url}/editors`, requestOptions)
-        .then(res => res.json())
-        .then(json => validCallback(json));
-}
-
-export function updateEditor(id, name, email, googleToken, callback) {
+export function editAboutPageOnMaster(googleToken, markdown, callback) {
     const requestOptions = {
         method: 'PUT',
         headers: getHttpHeaders(googleToken),
         body: JSON.stringify({
-            'id': id,
-            'name': name,
-            'email': email
+            text: markdown
         })
     };
 
     const validCallback = getValidCallback(callback);
-    
-    fetch(`${url}/editors`, requestOptions)
+
+    fetch(`${url}/about`, requestOptions)
         .then(res => res.json())
         .then(json => validCallback(json));
 }
 
-export function deleteEditor(id, googleToken, callback) {
+export function editPageOnBranch(googleToken, markdown, ref, callback) {
     const requestOptions = {
-        method: 'DELETE',
-        headers: getHttpHeaders(googleToken)
+        method: 'PUT',
+        headers: getHttpHeaders(googleToken),
+        body: JSON.stringify({
+            text: markdown,
+            ref: ref
+        })
     };
 
     const validCallback = getValidCallback(callback);
 
-    fetch(`${url}/editors?id=${id}`, requestOptions)
+    fetch(`${url}/about`, requestOptions)
         .then(res => res.json())
-        .then(json => validCallback(json))
+        .then(json => validCallback(json));
 }

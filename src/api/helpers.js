@@ -5,3 +5,11 @@ export function getValidCallback(callback) {
     }
     return validCallback;
 }
+
+export function getHttpHeaders(googleToken) {
+    return {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Authorization': `Bearer ${googleToken}`
+    };
+}
