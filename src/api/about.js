@@ -4,6 +4,8 @@ let url = null;
 
 if (process.env.NODE_ENV === 'development') {
     url = "http://localhost:3000";    
+} else if (process.env.NODE_ENV === 'staging') {
+    url = "https://msoe-sg-editor-api-staging.herokuapp.com";
 }
 
 export function getAboutPage(googleToken, callback) {
