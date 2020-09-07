@@ -2,6 +2,7 @@ import { getValidCallback, getHttpHeaders } from './helpers';
 
 let url = null;
 
+console.log(process.env.NODE_ENV);
 if (process.env.NODE_ENV === 'development') {
     url = "http://localhost:3000";    
 } else if (process.env.NODE_ENV === 'staging') {
