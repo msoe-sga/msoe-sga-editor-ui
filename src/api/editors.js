@@ -17,7 +17,10 @@ export function getAllEditors(googleToken, callback) {
     const validCallback = getValidCallback(callback);
 
     fetch(`${url}/editors`, requestOptions)
-        .then(res => res.json())
+        .then(res => {
+            console.log(res);
+            return res.json();
+        })
         .then(json => validCallback(json));
 }
 
