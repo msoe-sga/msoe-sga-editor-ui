@@ -13,3 +13,9 @@ export function getHttpHeaders(googleToken) {
         'Authorization': `Bearer ${googleToken}`
     };
 }
+
+export function getApiUrl() {
+    if (process.env.REACT_APP_API_URL) 
+        return process.env.REACT_APP_API_URL;
+    return 'http://localhost:3000';
+}

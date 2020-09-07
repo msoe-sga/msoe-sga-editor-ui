@@ -1,12 +1,6 @@
-import { getHttpHeaders } from './helpers';
+import { getHttpHeaders, getApiUrl } from './helpers';
 
-let url = null;
-
-if (process.env.NODE_ENV === 'development') {
-    url = "http://localhost:3000";    
-} else if (process.env.NODE_ENV === 'staging') {
-    url = "https://msoe-sg-editor-api-staging.herokuapp.com";
-}
+const url = getApiUrl();
 
 export function getKramdownPreview(googleToken, markdown) {
     return new Promise((resolve, reject) => {

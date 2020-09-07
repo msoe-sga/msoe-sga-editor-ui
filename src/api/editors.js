@@ -1,13 +1,6 @@
-import { getValidCallback, getHttpHeaders } from './helpers';
+import { getValidCallback, getHttpHeaders, getApiUrl } from './helpers';
 
-let url = null;
-
-console.log(process.env.NODE_ENV);
-if (process.env.NODE_ENV === 'development') {
-    url = "http://localhost:3000";    
-} else if (process.env.NODE_ENV === 'staging') {
-    url = "https://msoe-sg-editor-api-staging.herokuapp.com";
-}
+const url = getApiUrl();
 
 export function getAllEditors(googleToken, callback) {
     const requestOptions = {
