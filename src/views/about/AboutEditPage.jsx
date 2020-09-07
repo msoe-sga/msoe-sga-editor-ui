@@ -75,7 +75,7 @@ export default function AboutEditPage() {
                 <Alert variant='info'>This version of the about page is currently under review <Alert.Link href={pullRequestUrl}>here</Alert.Link>.</Alert>
             )}
             {error && (
-                <Alert variant='error'>{error}</Alert>
+                <Alert variant='danger'>{error}</Alert>
             )}
             {showSaveSuccessfulAlert && (
                 <Alert variant='success' onClose={() => setShowSaveSuccessfulAlert(false)} dismissible>About Page Save Successfuly.</Alert>
