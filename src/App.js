@@ -1,29 +1,46 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import PageLayout from "./views/PageLayout";
-import EditorsTable from './components/editors/EditorsTable';
+import PageLayout from "./views/layout/PageLayout";
+import Login from './views/login/Login';
+import EditorsTable from './elements/editors/EditorsTable/EditorsTable';
+import AboutEditPage from './views/about/AboutEditPage';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
-import allReducers from './api/state/reducers';
+import persistedReducer from './api/state/reducers';
+import { persistStore } from 'redux-persist';
+import { PersistGate } from 'redux-persist/integration/react';
 
 const paths = {
-    root: '/'
+    root: '/',
+    editors: '/editors',
+    about: '/about'
 }
 
-const store = createStore(allReducers);
+const store = createStore(persistedReducer);
+const persistor = persistStore(store)
 
 export default function App() {
     return (
         <Provider store={store}>
-            <BrowserRouter>
-                <Switch>
-                    <Route exact={true} path={paths.root}>
-                        <PageLayout>
-                            <EditorsTable />
-                        </PageLayout>
-                    </Route>
-                </Switch>
-            </BrowserRouter>
+            <PersistGate loading={null} persistor={persistor}>
+                <BrowserRouter>
+                    <Switch>
+                        <Route exact={true} path={paths.root}>
+                            <Login />
+                        </Route>
+                        <Route exact={true} path={paths.editors}>
+                            <PageLayout>
+                                <EditorsTable />
+                            </PageLayout>
+                        </Route>
+                        <Route exact={true} path={paths.about}>
+                            <PageLayout>
+                                <AboutEditPage />
+                            </PageLayout>
+                        </Route>
+                    </Switch>
+                </BrowserRouter>
+            </PersistGate>
         </Provider>
     );
 }

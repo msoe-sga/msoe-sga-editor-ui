@@ -1,15 +1,11 @@
-import { getValidCallback } from './helpers';
+import { getValidCallback, getHttpHeaders, getApiUrl } from './helpers';
 
-let url = null;
+const url = getApiUrl();
 
-if (process.env.NODE_ENV === 'development') {
-    url = "http://localhost:3000";    
-}
-
-export function getAllEditors(callback) {
+export function getAllEditors(googleToken, callback) {
     const requestOptions = {
         method: 'GET',
-        headers: getHttpHeaders()
+        headers: getHttpHeaders(googleToken)
     };
 
     const validCallback = getValidCallback(callback);
@@ -19,23 +15,10 @@ export function getAllEditors(callback) {
         .then(json => validCallback(json));
 }
 
-export function getEditorByEmail(email, callback) {
-    const requestOptions = {
-        method: 'GET',
-        headers: getHttpHeaders()
-    }
-
-    const validCallback = getValidCallback(callback);
-
-    fetch(`${url}/editors?email=${email}`, requestOptions)
-        .then(res => res.json())
-        .then(json => validCallback(json));
-}
-
-export function createEditor(name, email, callback) {
+export function createEditor(name, email, googleToken, callback) {
     const requestOptions = {
         method: 'POST',
-        headers: getHttpHeaders(),
+        headers: getHttpHeaders(googleToken),
         body: JSON.stringify({
             'name': name,
             'email': email
@@ -49,10 +32,10 @@ export function createEditor(name, email, callback) {
         .then(json => validCallback(json));
 }
 
-export function updateEditor(id, name, email, callback) {
+export function updateEditor(id, name, email, googleToken, callback) {
     const requestOptions = {
         method: 'PUT',
-        headers: getHttpHeaders(),
+        headers: getHttpHeaders(googleToken),
         body: JSON.stringify({
             'id': id,
             'name': name,
@@ -67,10 +50,10 @@ export function updateEditor(id, name, email, callback) {
         .then(json => validCallback(json));
 }
 
-export function deleteEditor(id, callback) {
+export function deleteEditor(id, googleToken, callback) {
     const requestOptions = {
         method: 'DELETE',
-        headers: getHttpHeaders()
+        headers: getHttpHeaders(googleToken)
     };
 
     const validCallback = getValidCallback(callback);
@@ -78,11 +61,4 @@ export function deleteEditor(id, callback) {
     fetch(`${url}/editors?id=${id}`, requestOptions)
         .then(res => res.json())
         .then(json => validCallback(json))
-}
-
-function getHttpHeaders() {
-    return {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-    };
 }
