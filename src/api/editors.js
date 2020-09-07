@@ -19,6 +19,7 @@ export function getAllEditors(googleToken, callback) {
     fetch(`${url}/editors`, requestOptions)
         .then(res => {
             console.log(res);
+            console.log(res.text());
             return res.json();
         })
         .then(json => validCallback(json));
