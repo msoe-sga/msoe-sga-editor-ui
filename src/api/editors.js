@@ -3,7 +3,7 @@ import { getValidCallback, getHttpHeaders } from './helpers';
 let url = null;
 
 if (process.env.NODE_ENV === 'development') {
-    url = "https://msoe-sg-editor-api-staging.herokuapp.com";    
+    url = "http://localhost:3000";    
 } else if (process.env.NODE_ENV === 'staging') {
     url = "https://msoe-sg-editor-api-staging.herokuapp.com";
 }
@@ -17,10 +17,7 @@ export function getAllEditors(googleToken, callback) {
     const validCallback = getValidCallback(callback);
 
     fetch(`${url}/editors`, requestOptions)
-        .then(res => {
-            console.log(res);
-            return res.json();
-        })
+        .then(res => res.json())
         .then(json => validCallback(json));
 }
 
