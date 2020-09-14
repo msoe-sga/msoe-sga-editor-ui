@@ -19,7 +19,8 @@
     "react-scripts": "3.3.0",
     "react-showdown": "^2.1.0",
     "react-table": "^7.0.0-rc.16",
-    "redux": "^4.0.5"
+    "redux": "^4.0.5",
+    "redux-persist": "^6.0.0"
   },
   "scripts": {
     "start": "react-scripts start",

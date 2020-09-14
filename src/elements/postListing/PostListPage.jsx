@@ -7,7 +7,7 @@ import { useHistory } from "react-router-dom";
 export default function PostListPage() {
 
   	 const history = useHistory();
-	 const goToNewPost = () =>{ 
+	   const goToNewPost = () =>{ 
 	    let path = `newPath`; 
 	    history.push('/posts/new');
 	  }

@@ -3,10 +3,10 @@ import { Nav } from 'react-bootstrap';
 import './Sidebar.scss';
 
 const paths = {
-    //editors: {
-    //   path: '/editors',
-    //    displayText: 'Editors',
-    //},
+    editors: {
+       path: '/editors',
+        displayText: 'Editors',
+    },
     posts: {
         path: '/posts',
         displayText: 'Posts',

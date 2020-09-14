@@ -14,12 +14,8 @@ export default function Login() {
     function onLoginSuccess(response) {
         dispatch(setAuthToken(response.wc.id_token));
         dispatch(setAuthError(null));
-        response.disconnect();
         history.push('/editors');
     }
-
-    console.log('Client Id');
-    console.log(process.env.REACT_APP_GOOGLE_CLIENT_ID);
     
     React.useEffect(() => {
         window.gapi.load('auth2', () => {
