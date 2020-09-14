@@ -1,10 +1,6 @@
-import { getValidCallback } from './helpers';
+import { getValidCallback, getHttpHeaders, getApiUrl } from './helpers';
 
-let url = null;
-
-if (process.env.NODE_ENV === 'development') {
-    url = "http://localhost:3000";    
-}
+const url = getApiUrl();
 
 export function getAllEditors(googleToken, callback) {
     const requestOptions = {
@@ -65,12 +61,4 @@ export function deleteEditor(id, googleToken, callback) {
     fetch(`${url}/editors?id=${id}`, requestOptions)
         .then(res => res.json())
         .then(json => validCallback(json))
-}
-
-function getHttpHeaders(googleToken) {
-    return {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
-        'Authorization': `Bearer ${googleToken}`
-    };
 }

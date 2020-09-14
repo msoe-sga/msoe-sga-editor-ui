@@ -10,6 +10,10 @@ const paths = {
     posts: {
         path: '/posts',
         displayText: 'Posts',
+    },
+    about: {
+        path: '/about',
+        displayText: 'Edit About Page'
     }
 };
 
@@ -24,7 +28,6 @@ export default function Sidebar() {
                             {paths[path].displayText}
                         </Nav.Link>
                     </Nav.Item>
-
                 );
             })}
         </Nav>
