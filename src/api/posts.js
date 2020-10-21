@@ -35,7 +35,7 @@ export function createPost(text, author, title, googleToken, callback) {
 
 export function editPost(text, author, title, path, ref, googleToken, callback) {
 	 const requestOptions = {
-                method: 'POST',
+                method: 'PUT',
                 headers: getHttpHeaders(googleToken),
                 body: JSON.stringify({
                         'text': text,
