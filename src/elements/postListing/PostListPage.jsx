@@ -1,5 +1,7 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
+import { useSelector, useDispatch } from 'react-redux';
+import { setAuthError } from '../../api/state/actions';
 import postData from './testPostData.json';
 import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
@@ -15,9 +17,12 @@ export default function PostListPage() {
     }
 
     const [isLoading, setIsLoading] = React.useState(true);
-    const [errorMessage, setErrorMessage] = Reackt.useState(null);
+    const [errorMessage, setErrorMessage] = React.useState(null);
+    
+    const authToken = useSelector(state => state.authToken);
 
     const [posts, setPosts] = React.useState(null);
+    const dispatch = useDispatch();
 
     React.useEffect(() => {
         if (isLoading) {
@@ -42,18 +47,18 @@ export default function PostListPage() {
 	    {!isLoading &&
                 <div>
                     {errorMessage && (
-                        <Alert variant='danger'>{error}</Alert>
+                        <Alert variant='danger'>{errorMessage}</Alert>
                     )}
                     <div className="pt-2">
                         <h2 className="pb-2" >Posts</h2>
                         <Button variant="primary" onClick={goToNewPost}>+ New </Button>
                         <hr/>
 
-                        {Object.keys(postData.posts).map(post => {
+                        {Object.keys(posts).map(p => {
 
                             return (
-                                <PostPreview key={postData.posts[post].title}
-                                post={postData.posts[post]}/>
+                                <PostPreview key={posts[p].title}
+                                post={posts[p]}/>
                             );
                         })}
 
