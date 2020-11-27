@@ -9,7 +9,6 @@ export function getValidCallback(callback) {
 export function getHttpHeaders(googleToken) {
     return {
         'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
         'Authorization': `Bearer ${googleToken}`
     };
 }
