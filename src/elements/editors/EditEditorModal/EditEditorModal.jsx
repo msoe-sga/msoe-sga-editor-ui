@@ -35,7 +35,7 @@ function EditEditorModal({ isModalOpen, closeModalMethod, setTableIndexMethod, m
         setEditorEmail(initialEditorEmail);
     }, [initialEditorName, initialEditorEmail]);
 
-    function formSubmit() {
+    function saveEditor() {
       if (newEditor) {
         createEditor(editorName, editorEmail, authToken, json => {
           if (json.isAuthorized === false) {
@@ -47,7 +47,7 @@ function EditEditorModal({ isModalOpen, closeModalMethod, setTableIndexMethod, m
             setTableIndexMethod();
             let newEditors = editors;
             newEditors.push(json);
-            newEditors = newEditors.sort((a, b) => a.fields.Name.localeCompare(b.fields.Name));
+            newEditors = newEditors.sort((a, b) => a.fields.Name.localeCompare(b.fields.Name, undefined, {numeric: true, sensitivity: 'base'}));
             dispatch(setEditors(newEditors)); 
             closeModalMethod();
           }
@@ -63,7 +63,7 @@ function EditEditorModal({ isModalOpen, closeModalMethod, setTableIndexMethod, m
             setTableIndexMethod();
             let newEditors = editors.filter(editor => editor.id !== editorId);
             newEditors.push(json);
-            newEditors = newEditors.sort((a, b) => a.fields.Name.localeCompare(b.fields.Name));
+            newEditors = newEditors.sort((a, b) => a.fields.Name.localeCompare(b.fields.Name, undefined, {numeric: true, sensitivity: 'base'}));
             dispatch(setEditors(newEditors)); 
             closeModalMethod();
           }
@@ -81,22 +81,20 @@ function EditEditorModal({ isModalOpen, closeModalMethod, setTableIndexMethod, m
         {errorMessage && (
           <div className="errorMessage">{errorMessage}</div>
         )}
-        <form onSubmit={formSubmit}>
-          <div className={styles.formControlContainer}>
-            <label>
-              Name: <input type="text" value={editorName} onChange={(event) => setEditorName(event.target.value)} />
-            </label>
-          </div>
-          <div className={styles.formControlContainer}>
-            <label>
-              Email: <input type="text" value={editorEmail} onChange={(event) => setEditorEmail(event.target.value)} />
-            </label>
-          </div>
-          <span>
-            <Button variant="primary" className="modalButton" type="submit">Save</Button>
-            <Button variant="primary" onClick={closeModalMethod}>Cancel</Button>
-          </span>
-        </form>
+        <div className={styles.formControlContainer}>
+          <label>
+            Name: <input type="text" value={editorName} onChange={(event) => setEditorName(event.target.value)} />
+          </label>
+        </div>
+        <div className={styles.formControlContainer}>
+          <label>
+            Email: <input type="text" value={editorEmail} onChange={(event) => setEditorEmail(event.target.value)} />
+          </label>
+        </div>
+        <span>
+          <Button variant="primary" className="modalButton" onClick={saveEditor}>Save</Button>
+          <Button variant="primary" onClick={closeModalMethod}>Cancel</Button>
+        </span>
       </Modal>
     );
 }
