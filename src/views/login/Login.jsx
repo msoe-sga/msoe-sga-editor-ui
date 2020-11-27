@@ -12,7 +12,8 @@ export default function Login() {
     const authError = useSelector(state => state.authError);
 
     function onLoginSuccess(response) {
-        dispatch(setAuthToken(response.wc.id_token));
+        console.log(response);
+        dispatch(setAuthToken(response.xc.id_token));
         dispatch(setAuthError(null));
         history.push('/editors');
     }
