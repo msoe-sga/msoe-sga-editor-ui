@@ -38,7 +38,7 @@ function DeleteEditorModal({ isModalOpen, closeModalMethod, setTableIndexMethod,
           setErrorMessage(json.error);
         } else {
           setTableIndexMethod();
-          const newEditors = editors.filter(editor => editor.id !== editorId).sort((a, b) => a.fields.Name.localeCompare(b.fields.Name));
+          const newEditors = editors.filter(editor => editor.id !== editorId).sort((a, b) => a.fields.Name.localeCompare(b.fields.Name, undefined, {numeric: true, sensitivity: 'base'}));
           dispatch(setEditors(newEditors));
           closeModalMethod();
         }
