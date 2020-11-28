@@ -72,7 +72,7 @@ export default function AboutEditPage() {
     return (
         <div>
             {pullRequestUrl && (
-                <Alert variant='info'>This version of the about page is currently under review <Alert.Link href={pullRequestUrl}>here</Alert.Link>.</Alert>
+                <Alert variant='info'>This version of the page is currently pending review from the Secretary. You can still update this version of the page below and view review comments from the Secretary <Alert.Link href={pullRequestUrl}>here</Alert.Link>.</Alert>
             )}
             {error && (
                 <Alert variant='danger'>{error}</Alert>
