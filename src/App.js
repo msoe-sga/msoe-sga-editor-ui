@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import PageLayout from "./views/layout/PageLayout";
 import Login from './views/login/Login';
 import EditorsTable from './elements/editors/EditorsTable/EditorsTable';
-import AboutEditPage from './views/about/AboutEditPage';
+import MarkdownEditPage from './views/markdown/MarkdownEditPage';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import persistedReducer from './api/state/reducers';
@@ -35,7 +35,10 @@ export default function App() {
                         </Route>
                         <Route exact={true} path={paths.about}>
                             <PageLayout>
-                                <AboutEditPage />
+                                <MarkdownEditPage
+                                    type="page"
+                                    filePath = "about.md"
+                                 />
                             </PageLayout>
                         </Route>
                     </Switch>

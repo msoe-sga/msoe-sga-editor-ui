@@ -1,15 +1,15 @@
 import React from 'react';
 import ReactMde from 'react-mde';
-import styles from './AboutEditPage.module.scss';
+import styles from './MarkdownEditPage.module.scss';
 import { useSelector, useDispatch } from 'react-redux';
-import { getAboutPage, editAboutPageOnMaster, editPageOnBranch } from '../../api/about';
-import { getKramdownPreview } from '../../api/preview';
+import { getJekyllItem, editJekyllItem, getKramdownPreview } from '../../api/jekyll-items';
 import { useHistory } from 'react-router-dom';
 import { setAuthError } from '../../api/state/actions';
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 
-export default function AboutEditPage() {
+export default function MarkdownEditPage({ type, filePath}) {
+    const [item, setItem] = React.useState(null);
     const [value, setValue] = React.useState('');
     const [ref, setRef] = React.useState(null);
     const [pullRequestUrl, setPullRequestUrl] = React.useState(null);
@@ -24,61 +24,53 @@ export default function AboutEditPage() {
     const history = useHistory();
 
     React.useEffect(() => {
-        getAboutPage(authToken, json => {
+        getJekyllItem(authToken, type, filePath, json => {
             if (json.isAuthorized === false) {
                 dispatch(setAuthError(json.error));
                 history.push('/');
             }
+            setItem(json);
             setValue(json.contents);
             setRef(json.github_ref);
             setPullRequestUrl(json.pull_request_url);
         });
-    }, [authToken, dispatch, history]);
+    }, [authToken, dispatch, history, type, filePath]);
     
     function onSaveClick() {
         document.body.style.cursor = 'wait';
         setReadOnly(true);
-        if (ref) {
-            editPageOnBranch(authToken, value, ref, json => {
-                if (json && json.isAuthorized === false) {
-                    dispatch(setAuthError(json.error));
-                    history.push('/');
-                } else if (json.error) {
-                    setError(json.error);
-                } else {
-                    setShowSaveSuccessfulAlert(true);
-                }
-                setReadOnly(false);
-                document.body.style.cursor = 'default';
-            });
-        } else {
-            editAboutPageOnMaster(authToken, value, json => {
-                if (json.isAuthorized === false) {
-                    dispatch(setAuthError(json.error));
-                    history.push('/');
-                } else if (json.error) {
-                    setError(json.error);
-                } else {
+
+        const newItem = Object.assign({}, item)
+        newItem.contents = value;
+        editJekyllItem(authToken, type, ref, newItem, json => {
+            if (json.isAuthorized === false) {
+                dispatch(setAuthError(json.error));
+                history.push('/');
+            } else if (json.error) {
+                setError(json.error);
+            } else {
+                if (!ref) {
                     setRef(json.github_ref);
                     setPullRequestUrl(json.pull_request_url);
-                    setShowSaveSuccessfulAlert(true);
                 }
-                setReadOnly(false);
-                document.body.style.cursor = 'default';
-            });
-        }
+                setItem(newItem);
+                setShowSaveSuccessfulAlert(true);
+            }
+            setReadOnly(false);
+            document.body.style.cursor = 'default';
+        });
     }
 
     return (
         <div>
             {pullRequestUrl && (
-                <Alert variant='info'>This version of the page is currently pending review from the Secretary. You can still update this version of the page below and view review comments from the Secretary <Alert.Link href={pullRequestUrl}>here</Alert.Link>.</Alert>
+                <Alert variant='info'>This version of the {type} is currently pending review from the Secretary. You can still update this version of the {type} below and view review comments from the Secretary <Alert.Link href={pullRequestUrl}>here</Alert.Link>.</Alert>
             )}
             {error && (
                 <Alert variant='danger'>{error}</Alert>
             )}
             {showSaveSuccessfulAlert && (
-                <Alert variant='success' onClose={() => setShowSaveSuccessfulAlert(false)} dismissible>About Page Save Successfuly.</Alert>
+                <Alert variant='success' onClose={() => setShowSaveSuccessfulAlert(false)} dismissible>{type} Saved Successfuly.</Alert>
             )}
             <div className={styles.editContainer}>
                 <ReactMde
